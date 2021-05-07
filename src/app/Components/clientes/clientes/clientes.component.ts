@@ -5,7 +5,7 @@ import { ConsumidorService } from '../../../Services/consumidor.service';
 import { ConsumidorModel } from '../../../Models/Consumidor';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OrderService } from 'src/app/Services/order.service';
-import { ValidatorsFunctions } from 'src/app/helpers/validators';
+// import { ValidatorsFunctions } from 'src/app/helpers/validators';
 
 @Component({
   selector: 'app-clientes',
@@ -28,9 +28,9 @@ export class ClientesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (ValidatorsFunctions.validateIdEmpresa()) {
+    // if (ValidatorsFunctions.validateIdEmpresa()) {
       this.idEmpresa = localStorage.getItem('empresaId');
-    }
+    // }
     this.createForm();
     this.order.UpdateConsumidor(this.consumidor);
   }
