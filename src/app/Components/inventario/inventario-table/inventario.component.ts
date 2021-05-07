@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { InventarioService } from 'src/app/Services/inventario.service';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-// import { HelperFunctions } from 'src/app/helpers/functions';
-// import { ValidatorsFunctions } from 'src/app/helpers/validators';
 import Swal from 'sweetalert2';
 import * as jQuery from 'jquery';
+import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
 
 @Component({
   selector: 'app-inventario',
@@ -30,7 +29,7 @@ export class InventarioComponent implements OnInit {
   checkIcon = '../../../../assets/images/iconos/checked.png';
   searchHeader: object[] = new Array()
 
-  constructor(private inventarioService: InventarioService, private fb: FormBuilder) {
+  constructor(private inventarioService: InventarioService, private fb: FormBuilder, private helpers: HelperFunctionsService) {
     inventarioService.headersInventario$.subscribe((newObject: object) => {
       this.orderHeaders = newObject['headers'];
       this.getSearchHeaders()
@@ -41,7 +40,6 @@ export class InventarioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.searchHeader[0]['id'] = '';
     this.getHeaders();
     if (this.inventario == null) {
       this.inventario = new Array();
@@ -65,7 +63,7 @@ export class InventarioComponent implements OnInit {
     this.inventario.forEach(element => {
       if (element['precio'] != '') {
         if (typeof element['precio'] == 'number') {
-          // element['precio'] = HelperFunctions.formatter.format(element['precio']);
+          element['precio'] = this.helpers.formatter.format(element['precio']);
         }
       }
     });
@@ -121,7 +119,7 @@ export class InventarioComponent implements OnInit {
     });
   }
   getInventario() {
-    // if (ValidatorsFunctions.validateIdEmpresa()) {
+    if (this.helpers.validateIdEmpresa()) {
       let inventarioName = localStorage.getItem('inventario');
       Swal.fire({
         allowOutsideClick: false,
@@ -141,15 +139,15 @@ export class InventarioComponent implements OnInit {
         Swal.close();
         console.log(err);
       })
-    // } else {
-    //   Swal.close();
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'Error',
-    //     text: 'Se ha presentado un error inesperado'
-    //   });
-    //   return null
-    // }
+    } else {
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Se ha presentado un error inesperado'
+      });
+      return null
+    }
   }
   change(i: number) {
     [this.searchHeader[0], this.searchHeader[i]] = [this.searchHeader[i], this.searchHeader[0]];
@@ -184,7 +182,7 @@ export class InventarioComponent implements OnInit {
         })
         return;
       }
-      // if (ValidatorsFunctions.validateIdEmpresa()) {
+      if (this.helpers.validateIdEmpresa()) {
         let inventarioName = localStorage.getItem('inventario');
         Swal.fire({
           title: '¿Desea guardar los cambios?',
@@ -228,15 +226,15 @@ export class InventarioComponent implements OnInit {
             this.edit = -1;
           }
         })
-      // } else {
-      //   Swal.close();
-      //   Swal.fire({
-      //     icon: 'error',
-      //     title: 'Error',
-      //     text: 'Se ha presentado un error inesperado'
-      //   });
-      //   return null
-      // }
+      } else {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Se ha presentado un error inesperado'
+        });
+        return null
+      }
     }
   }
   updateConsumidor(index) {
@@ -269,7 +267,7 @@ export class InventarioComponent implements OnInit {
       denyButtonText: `No guardar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        // if (ValidatorsFunctions.validateIdEmpresa()) {
+        if (this.helpers.validateIdEmpresa()) {
           let inventarioName = localStorage.getItem('inventario');
           Swal.fire({
             allowOutsideClick: false,
@@ -305,11 +303,11 @@ export class InventarioComponent implements OnInit {
           this.edit = -1;
           return null
         }
-      // } else if (result.isDenied) {
-      //   this.inventario = this.oldInventory;
-      //   this.oldInventory = JSON.parse(JSON.stringify(this.inventario));
-      //   this.edit = -1;
-      // }
+      } else if (result.isDenied) {
+        this.inventario = this.oldInventory;
+        this.oldInventory = JSON.parse(JSON.stringify(this.inventario));
+        this.edit = -1;
+      }
     })
   }
   createForm(inventario: Object) {
@@ -326,36 +324,36 @@ export class InventarioComponent implements OnInit {
       confirmButtonText: `Eliminar`,
     }).then((result) => {
       if (result.isConfirmed) {
-        // if (ValidatorsFunctions.validateIdEmpresa()) {
-          let inventarioName = localStorage.getItem('inventario');
+        if (this.helpers.validateIdEmpresa()) {
+        let inventarioName = localStorage.getItem('inventario');
+        Swal.fire({
+          allowOutsideClick: false,
+          icon: 'info',
+          text: 'Espere por favor'
+        });
+        Swal.showLoading();
+        this.inventarioService.deleteOne(inventarioName, this.inventario[index].id).subscribe(res => {
+          Swal.close();
+          Swal.fire('Inventario eliminado', '', 'success');
+          this.inventario.splice(index, 1);
+        }, (err) => {
+          Swal.close();
           Swal.fire({
-            allowOutsideClick: false,
-            icon: 'info',
-            text: 'Espere por favor'
+            icon: 'error',
+            title: 'Error',
+            text: 'Se ha presentado un error inesperado'
           });
-          Swal.showLoading();
-          this.inventarioService.deleteOne(inventarioName, this.inventario[index].id).subscribe(res => {
-            Swal.close();
-            Swal.fire('Inventario eliminado', '', 'success');
-            this.inventario.splice(index, 1);
-          }, (err) => {
-            Swal.close();
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Se ha presentado un error inesperado'
-            });
-            console.log(err);
+          console.log(err);
+        });
+        } else {
+          Swal.close();
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Se ha presentado un error inesperado'
           });
-        // } else {
-        //   Swal.close();
-        //   Swal.fire({
-        //     icon: 'error',
-        //     title: 'Error',
-        //     text: 'Se ha presentado un error inesperado'
-        //   });
-        //   return null
-        // }
+          return null
+        }
       }
     })
   }

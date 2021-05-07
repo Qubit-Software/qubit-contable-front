@@ -4,7 +4,7 @@ import { PosService } from 'src/app/Services/pos.service';
 import { SucursalService } from 'src/app/Services/sucursal.service';
 import Swal from 'sweetalert2';
 import { VentasService } from 'src/app/Services/ventas.service';
-// import { HelperFunctions } from 'src/app/helpers/functions';
+import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
 
 @Component({
   selector: 'app-factura-table',
@@ -24,7 +24,7 @@ export class FacturaTableComponent implements OnInit {
   iva = 0;
   total = 0;
 
-  constructor(private venta: VentasService, private sucursal: SucursalService, private pos: PosService) { }
+  constructor(private venta: VentasService, private sucursal: SucursalService, private pos: PosService, private helpers: HelperFunctionsService) { }
 
   ngOnInit(): void {
     this.currentDate.setHours(0, 0, 0, 0)
@@ -72,22 +72,22 @@ export class FacturaTableComponent implements OnInit {
     });
     Swal.showLoading();
     let fecha = `${this.currentDate.getDate()}/${this.currentDate.getMonth() + 1}/${this.currentDate.getFullYear()}`;
-    // this.pos.posReport(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion,
-    //   this.sucursal.sucursal.ciudad, this.period, fecha, HelperFunctions.formatter.format(this.efectivo),
-    //   HelperFunctions.formatter.format(this.tarjeta), HelperFunctions.formatter.format(this.otro), HelperFunctions.formatter.format(this.iva), HelperFunctions.formatter.format(this.total)).subscribe(res => {
-    //     Swal.close();
-    //     Swal.fire('Ticket impreso',
-    //       'El ticket se ha dispensado con exito',
-    //       'success');
-    //   }, (err) => {
-    //     Swal.close();
-    //     Swal.fire({
-    //       icon: 'error',
-    //       title: 'Error',
-    //       text: 'No se encuentra la impresora conectada'
-    //     });
-    //     console.log(err);
-    //   });
+    this.pos.posReport(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion,
+      this.sucursal.sucursal.ciudad, this.period, fecha, this.helpers.formatter.format(this.efectivo),
+      this.helpers.formatter.format(this.tarjeta), this.helpers.formatter.format(this.otro), this.helpers.formatter.format(this.iva), this.helpers.formatter.format(this.total)).subscribe(res => {
+        Swal.close();
+        Swal.fire('Ticket impreso',
+          'El ticket se ha dispensado con exito',
+          'success');
+      }, (err) => {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se encuentra la impresora conectada'
+        });
+        console.log(err);
+      });
   }
   change(btn): void {
     this.pressed = btn;

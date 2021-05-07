@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { faPlus, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { InventarioService } from 'src/app/Services/inventario.service';
-// import { ValidatorsFunctions } from 'src/app/helpers/validators';
-// import { HelperFunctions } from 'src/app/helpers/functions';
 import Swal from 'sweetalert2';
 import * as jQuery from 'jquery';
 import { OrderService } from 'src/app/Services/order.service';
@@ -10,6 +8,7 @@ import { ConsumidorModel } from 'src/app/Models/Consumidor';
 import { SucursalService } from 'src/app/Services/sucursal.service';
 import { VentasService } from 'src/app/Services/ventas.service';
 import { PosService } from 'src/app/Services/pos.service';
+import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
 
 @Component({
   selector: 'app-factura-producto',
@@ -50,7 +49,7 @@ export class FacturaProductoComponent implements OnInit {
   headerPos: string = '';
 
   constructor(private inventarioService: InventarioService, private order: OrderService, private sucursal: SucursalService,
-    private ventas: VentasService, private pos: PosService) {
+    private ventas: VentasService, private pos: PosService, private helpers: HelperFunctionsService) {
     inventarioService.headersInventario$.subscribe((newObject: object) => {
       this.orderHeaders = newObject['headers'];
       this.headerPos = newObject['headerPos'];
@@ -96,14 +95,14 @@ export class FacturaProductoComponent implements OnInit {
     this.inventario.forEach(element => {
       if (element['precio'] != '') {
         if (typeof element['precio'] == 'number') {
-          // element['precio'] = HelperFunctions.formatter.format(element['precio']);
+          element['precio'] = this.helpers.formatter.format(element['precio']);
         }
       }
     });
   }
   transformNumber(number) {
     if (typeof number == 'number') {
-      // return HelperFunctions.formatter.format(number);
+      return this.helpers.formatter.format(number);
     } else {
       return number;
     }
@@ -158,7 +157,7 @@ export class FacturaProductoComponent implements OnInit {
     this.productsCompra.push(itemNew);
   }
   getInventario() {
-    // if (ValidatorsFunctions.validateIdEmpresa()) {
+    if (this.helpers.validateIdEmpresa()) {
       let inventarioName = localStorage.getItem('inventario');
       Swal.fire({
         allowOutsideClick: false,
@@ -175,15 +174,15 @@ export class FacturaProductoComponent implements OnInit {
         Swal.close();
         console.log(err);
       })
-    // } else {
-    //   Swal.close();
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'Error',
-    //     text: 'Se ha presentado un error inesperado'
-    //   });
-    //   return null
-    // }
+    } else {
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Se ha presentado un error inesperado'
+      });
+      return null
+    }
   }
   selectProduct(text, col) {
     jQuery('input').blur();
@@ -404,42 +403,42 @@ export class FacturaProductoComponent implements OnInit {
       let iva = this.getNumber(this.iva);
       let descuento = this.getNumber(this.descuento);
       let recibe = this.getNumber(this.recibeInput);
-      // this.pos.posVenta(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion, this.sucursal.sucursal.ciudad,
-      //   factura, fecha, products, HelperFunctions.formatter.format(this.subtotal), HelperFunctions.formatter.format(iva), HelperFunctions.formatter.format(descuento), HelperFunctions.formatter.format(this.total),
-      //   HelperFunctions.formatter.format(recibe), HelperFunctions.formatter.format(this.cambioCalcule), factura, this.consumidor.nombre).subscribe(res => {
-      //     this.ventas.createVenta(this.sucursal.empresa.id, this.total, this.iva, fecha1, this.seleccionado, this.comentario, this.sucursal.sucursal.id,
-      //       this.consumidor.id, productArray).subscribe(res => {
-      //         this.order.UpdateConsumidor(new ConsumidorModel());
-      //         this.productsCompra = new Array();
-      //         this.newitemCompra();
-      //         this.order.chargeItemsInventario(new Array())
-      //         this.recibeInput = '';
-      //         this.cambioCalcule = 0;
-      //         this.descuento = 0;
-      //         this.comentario = '';
-      //         this.calculaValores();
-      //         Swal.close();
-      //         Swal.fire('Ticket impreso',
-      //           'El ticket se ha dispensado con exito',
-      //           'success');
-      //       }, (err) => {
-      //         Swal.close();
-      //         Swal.fire({
-      //           icon: 'error',
-      //           title: 'Error',
-      //           text: 'Vuelve a intentarlo'
-      //         });
-      //         console.log(err);
-      //       });
-      //   }, (err) => {
-      //     Swal.close();
-      //     Swal.fire({
-      //       icon: 'error',
-      //       title: 'Error',
-      //       text: 'No se encuentra la impresora conectada'
-      //     });
-      //     console.log(err);
-      //   });
+      this.pos.posVenta(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion, this.sucursal.sucursal.ciudad,
+        factura, fecha, products, this.helpers.formatter.format(this.subtotal), this.helpers.formatter.format(iva), this.helpers.formatter.format(descuento), this.helpers.formatter.format(this.total),
+        this.helpers.formatter.format(recibe), this.helpers.formatter.format(this.cambioCalcule), factura, this.consumidor.nombre).subscribe(res => {
+          this.ventas.createVenta(this.sucursal.empresa.id, this.total, this.iva, fecha1, this.seleccionado, this.comentario, this.sucursal.sucursal.id,
+            this.consumidor.id, productArray).subscribe(res => {
+              this.order.UpdateConsumidor(new ConsumidorModel());
+              this.productsCompra = new Array();
+              this.newitemCompra();
+              this.order.chargeItemsInventario(new Array())
+              this.recibeInput = '';
+              this.cambioCalcule = 0;
+              this.descuento = 0;
+              this.comentario = '';
+              this.calculaValores();
+              Swal.close();
+              Swal.fire('Ticket impreso',
+                'El ticket se ha dispensado con exito',
+                'success');
+            }, (err) => {
+              Swal.close();
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Vuelve a intentarlo'
+              });
+              console.log(err);
+            });
+        }, (err) => {
+          Swal.close();
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se encuentra la impresora conectada'
+          });
+          console.log(err);
+        });
     })
   }
 

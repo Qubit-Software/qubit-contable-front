@@ -5,6 +5,7 @@ import { ConsumidorService } from '../../../Services/consumidor.service';
 import { ConsumidorModel } from '../../../Models/Consumidor';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { OrderService } from 'src/app/Services/order.service';
+import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
 // import { ValidatorsFunctions } from 'src/app/helpers/validators';
 
 @Component({
@@ -21,16 +22,17 @@ export class ClientesComponent implements OnInit {
   faSearch = faSearch;
   idEmpresa: string;
 
-  constructor(private consumidorService: ConsumidorService, private fb: FormBuilder, private order: OrderService) {
+  constructor(private consumidorService: ConsumidorService, private fb: FormBuilder, private order: OrderService,
+    private helpers:HelperFunctionsService) {
     order.consumidor$.subscribe((newConsumidor: ConsumidorModel) => {
       this.consumidor = newConsumidor;
     });
   }
 
   ngOnInit(): void {
-    // if (ValidatorsFunctions.validateIdEmpresa()) {
+    if (this.helpers.validateIdEmpresa()) {
       this.idEmpresa = localStorage.getItem('empresaId');
-    // }
+    }
     this.createForm();
     this.order.UpdateConsumidor(this.consumidor);
   }
