@@ -1,0 +1,57 @@
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div style="text-align: center; margin: 18px 0px 11px;">
+                <h2>Facturas</h2>
+                <p>{{ currentDate | date : 'dd/MM/y' }} </p>
+            </div>
+            <div class="row" style="margin-bottom:20px;">
+                <div class="col-md-6" style="text-align: center; padding-left: 22%;">
+                    <button [ngClass]="{btnpressed: pressed === 1 } " (click)="change(1)" class="btn">
+                        Diario
+                    </button>
+                </div>
+                <div class="col-md-6" style="text-align: center; padding-right: 22%;">
+                    <button class="btn" [ngClass]="{btnpressed: pressed === 2 } " (click)="change(2)">
+                        Mensual
+                    </button>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12" style="width:80%; margin: auto;">
+                        <div class="table-responsive" data-pattern="priority-columns">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th data-priority="1">No. Factura</th>
+                                        <th data-priority="2">Fecha</th>
+                                        <th data-priority="3">Metodo de pago</th>
+                                        <th data-priority="4">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let factura of facturas" [attr.id]="factura.id">
+                                        <td>{{factura.idFactura}}</td>
+                                        <td>{{factura.fecha | date : 'dd/MM/y'}}</td>
+                                        <td>{{factura.metodo}}</td>
+                                        <td>{{factura.total | currency : '$': 'symbol':'1.0-0'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="boxTotal" style="text-align: center;">
+                    <h4>Total producido:</h4>
+                    <p style="margin-bottom: 2px;">{{total | currency}}</p>
+                    <div class="btnContainer">
+                        <button class="btn mt-0 titles" type="submit" (click)="print()">
+                            Reporte
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

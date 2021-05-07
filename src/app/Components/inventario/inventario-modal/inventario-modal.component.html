@@ -1,0 +1,54 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title ml-3" id="exampleModalLabel">Selecciona Articulo</h5>
+            <button type="button" class="close mr-2" aria-label="Close" (click)='closeModal()'>
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row" style="margin-bottom: 1rem;">
+                    <div id="searchDiv" class="col-md-8">
+                        <input id="search" type="text" class="form-control" [(ngModel)]="searchText" autocomplete="off">
+                    </div>
+                    <div class="dropdown col-md-4">
+                        <button class="btn btn-primary dropdown-toggle poppinsLight" type="button"
+                            data-toggle="dropdown" *ngIf="searchHeader.length>0">{{searchHeader[0]['nombre']}}
+                            <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li *ngFor="let header of searchHeader | slice:1 ; let i=index">
+                                <a (click)="change(i+1)" style="cursor: pointer;">{{header['nombre']}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <table>
+                            <tr class="poppinsMedium">
+                                <th *ngFor="let col of columns">{{col}}</th>
+                                <th id="tableCorner" class="poppinsMedium text-center">Qubit</th>
+                            </tr>
+                            <tr class="poppinsLight"
+                                *ngFor="let i of inventario| filter:searchText:((searchHeader[0]==null)?'':searchHeader[0]['id']) | paginate: {itemsPerPage: 5, currentPage:page}  ;let index = index">
+                                <th *ngFor="let col of columnsKey"><input type="text" [ngClass]="{
+                                  'inputTable':true,
+                                  'recibeInput':col === 'precio'}" [(ngModel)]="i[col]"
+                                        [attr.disabled]="(index!=edit) ? '' : null" />
+                                </th>
+                                <td class="d-flex justify-content-around qubitIcons">
+                                    <button (click)='addInventario(index)' class="btn-plus">
+                                        <fa-icon [icon]="faPlus"></fa-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                        <pagination-controls (pageChange)="page = $event" responsive="true" previousLabel=""
+                            nextLabel="" class="pagination mx-auto mt-4 poppinsLight"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+<section>
+    <div class="d-flex justify-content-around">
+        <div class="card firstCards text-center">
+            <span class="poppinsMedium"> <img src="../../../../assets/images/iconos/shopingCart.png" width="25px" alt=""
+                    class="img-fluid mr-2">ventas del día</span>
+            <span class="poppinsMedium">$598.000</span>
+        </div>
+        <div class="card firstCards text-center">
+            <span class="poppinsMedium"><img src="../../../../assets/images/iconos/clients.png" width="25px" alt=""
+                    class="img-fluid mr-2">clientes registrados</span>
+            <span class="poppinsLight">15</span>
+        </div>
+        <div class="card firstCards text-center">
+            <span class="poppinsMedium"><img src="../../../../assets/images/iconos/document.png" width="25px" alt=""
+                    class="img-fluid mr-2">facturas emitidas</span>
+            <span class="poppinsLight">25</span>
+        </div>
+        <div class="card firstCards text-center">
+            <span class="poppinsMedium"><img src="../../../../assets/images/iconos/check.png" width="25px" alt=""
+                    class="img-fluid mr-2">articulos vendidos</span>
+            <span class="poppinsLight">25</span>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="d-flex justify-content-between">
+        <div class="card text-center" id="ingresosBox">
+            <p class="poppinsMedium">Ingresos</p>
+            <div class="row">
+                <div class="col-6 text-left">
+                    <span class="poppinsLight">Efectivo</span>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="poppinsMedium">$ 9.300</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-left">
+                    <span class="poppinsLight">Tarjeta de credito</span>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="poppinsMedium">$ 9.300</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-left">
+                    <span class="poppinsLight">Abonos</span>
+                </div>
+                <div class="col-6 text-right">
+                    <span class="poppinsMedium">$ 9.300</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-left">
+                    <p class=" poppinsMedium">Total</p>
+                </div>
+                <div class="col-6 text-right">
+                    <p class="poppinsMedium">$ 9.300</p>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <button class="btn">Imprimir</button>
+                </div>
+            </div>
+        </div>
+        <div class="card flex-grow-1 ">
+            <p class="poppinsMedium">% Metodos de pago</p>
+            <div class="chart-wrapper mx-auto">
+                <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+                    [options]="pieChartOptions" [colors]="pieChartColors" [plugins]="pieChartPlugins"
+                    [legend]="pieChartLegend" height="40vh" width="80vw">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="d-flex ">
+        <div class="card flex-grow-1 text-center">
+            <p class="poppinsMedium text-left font-weight-bolder">Informe Contable</p>
+            <div>
+                <div>
+                    <div class="barChartWrapper mx-auto">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                            [options]="barChartOptions" [plugins]="barChartPlugins" [colors]="barChartColors"
+                            [legend]="barChartLegend" [chartType]="barChartType" height="15vh" width="80vw">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-9" style="padding: 0px;">
+      <div class="containerImage">
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active" data-interval="4000">
+              <img src="../../../assets/images/loginCarousell/zebra-on-grassland-in-africa-4RBNPPT.jpg"
+                class="d-block w-100" alt="Qubit-Contable">
+            </div>
+            <div class="carousel-item " data-interval="4000">
+              <img src="../../../assets/images/loginCarousell/antarctica-P4CYSD6.jpg" class="d-block w-100"
+                alt="Qubit-Contable">
+            </div>
+            <div class="carousel-item" data-interval="4000">
+              <img src="../../../assets/images/loginCarousell/bogota-colombia-at-dusk-P7LX9C8.jpg" class="d-block w-100"
+                alt="Qubit-Contable">
+            </div>
+            <div class="carousel-item" data-interval="4000">
+              <img src="../../../assets/images/loginCarousell/shanghai-china-cityscape-PMEEZ8X.jpg"
+                class="d-block w-100" alt="Qubit-Contable">
+            </div>
+            <div class="carousel-item" data-interval="4000">
+              <img
+                src="../../../assets/images/loginCarousell/porto-santo-stefano-village-church-and-castle-aeri-74KXYFF.jpg"
+                class="d-block w-100" alt="Qubit-Contable">
+            </div>
+            <div class="carousel-item" data-interval="4000">
+              <img src="../../../assets/images/loginCarousell/dallas-texas-skyline-PD3MV3X.jpg" class="d-block w-100"
+                alt="Qubit-Contable">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-md-3 bg-white">
+      <div class="form">
+        <div class="imageHeader">
+          <img src="../../../assets/images/Logo/LogoContable.png" alt="">
+        </div>
+        <form (ngSubmit)="login( f )" #f="ngForm" class="formLogin">
+          <h3 class="mb-1 poppinsMedium text-left">Iniciar Sesion</h3>
+          <p class="poppinsLight text-left">Bienvenido a Qubit contable</p>
+          <input type="text" class="form__field poppinsLight text-left" [(ngModel)]="usuario.usuario"
+            placeholder="Usuario" name="user" required />
+          <input type="password" class="form__field poppinsLight mb-2 text-left" [(ngModel)]="usuario.contrasena"
+            placeholder="Contraseña" name="password" required />
+          <a class="poppinsMedium">Olvide mi contraseña</a>
+          <div style="text-align: center; margin-top: 6vh;">
+            <button type="submit" class="btn mt-5 poppinsLight">Continuar</button>
+          </div>
+        </form>
+      </div>
+      <div class="footer">
+        <p class="poppinsMedium ">Qubit-Software c Derechos Reservados 2020</p>
+      </div>
+    </div>
+  </div>
+</div>

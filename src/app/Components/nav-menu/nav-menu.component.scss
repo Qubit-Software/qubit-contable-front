@@ -1,0 +1,58 @@
+// @import "bourbon";
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,600);
+
+a{
+  text-decoration: none;
+}
+
+
+/* ------------- Sidebar ----------------*/
+.sidebar {
+  height: 90vh;
+  header{
+    background-color:white;
+    padding: 0.75em	1em;
+    height: 16vh;
+  }
+}
+/* ------------- Sidebar Ends ----------------*/
+
+/* ------------- Sidebar Nav ----------------*/
+.sidebar-nav {
+  background-color:white;
+  height: 100%;
+  font-weight: 400;
+  font-size: 1.0em;
+  padding-bottom: 6em;
+
+  ul{
+    list-style:none;
+    padding: 0;
+    margin: 0;
+    li{
+      a{
+        color:#343E7D;
+        font-size: 0.8em;
+        padding: 0.5em 20%;
+        position: relative;
+        display:block;
+      }
+      &:hover{
+        background-color:#4D5DB7;
+      }
+      a:hover{
+        color:white;
+      }
+
+    }
+  }
+}
+
+/* ------------- Sidebar Nav Ends ----------------*/
+
+
+#logoQubitContable{
+  height:auto;
+  width: 100%;
+}
+

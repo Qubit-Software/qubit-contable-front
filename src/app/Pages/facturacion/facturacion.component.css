@@ -1,0 +1,38 @@
+.btn {
+  color: #343E7D;
+  font-weight: 600;
+  font-size: 22px;
+  background-color: #E9ECF6;
+  outline: none;
+  border: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  color: #343E7D;
+  background-color: #E9ECF6;
+  border-color: #E9ECF6;
+}
+
+.btn.focus, .btn:focus {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  ;
+}
+
+.dropdown-menu {
+  min-width: 20rem;
+}
+
+.dropdown-menu li {
+  padding: 0.4rem;
+}
+
+.dropdown-menu li a {
+  color: #343E7D;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #23294e !important;
+}

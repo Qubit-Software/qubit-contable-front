@@ -1,0 +1,92 @@
+<div class="card">
+  <div class="row">
+    <div class="col-md-3 ml-4 ">
+      <h4 class="poppinsMedium">Cliente</h4>
+      <input type="text" class="poppinsLight form__field form-control text-left" [(ngModel)]="consumidor.nombre"
+        placeholder="Nombre" disabled />
+      <h4 class="poppinsMedium">Correo Electronico</h4>
+      <input type="text" class="poppinsLight form__field form-control text-left" [(ngModel)]="consumidor.correo"
+        placeholder="Correo" disabled />
+    </div>
+    <div class="col-md-3 offset-1">
+      <h4 class="poppinsMedium">C.C.</h4>
+      <div class="inputCC">
+        <input type="number" class="poppinsLight form__field form-control text-left" [(ngModel)]="consumidor.cedula"
+          name="cedula" placeholder="CC" />
+        <fa-icon [icon]="faSearch" class="icon" (click)='search()'></fa-icon>
+      </div>
+      <h4 class="poppinsMedium">Dirección </h4>
+      <input type="text" class="poppinsLight form__field form-control text-left" [(ngModel)]="consumidor.direccion"
+        placeholder="direccion" disabled />
+    </div>
+    <div class="col-md-3 offset-1">
+      <h4 class="poppinsMedium">Celular:</h4>
+      <input type="text" class="poppinsLight form__field form-control text-left" [(ngModel)]="consumidor.telefono"
+        placeholder="Telefono" disabled />
+      <h4 class="poppinsMedium">Ciudad</h4>
+      <input type="text" class="poppinsLight form__field form-control text-left" [(ngModel)]="consumidor.ciudad"
+        placeholder="Ciudad" disabled />
+    </div>
+  </div>
+  <button (click)='openModal()' class="btn-floating">
+    <fa-icon [icon]="faPlus"></fa-icon>
+  </button>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
+  role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title ml-3" id="exampleModalLabel">Crear Cliente</h5>
+        <button type="button" class="close mr-2" aria-label="Close" (click)='closeModal()'>
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="form-group" [formGroup]="form">
+            <div class="row mb-3">
+              <div class="col-4">
+                <h6 class="poppinsMedium">Nombre</h6>
+                <input name="nombre" type="text" class="poppinsLight form__field form-control text-left"
+                  formControlName="nombre" placeholder="Nombre" />
+              </div>
+              <div class="col-4">
+                <h6 class="poppinsMedium">C.C</h6>
+                <input type="number" class="poppinsLight form__field form-control text-left" name="cedula"
+                formControlName="cedula" placeholder="Cedula" />
+              </div>
+              <div class="col-4">
+                <h6 class="poppinsMedium">Celular</h6>
+                <input type="number" class="poppinsLight form__field form-control text-left" name="telefono"
+                formControlName="telefono" placeholder="Telefono" />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-4">
+                <h6 class="poppinsMedium">Correo Electronico</h6>
+                <input type="text" class="poppinsLight form__field form-control text-left" name="correo"
+                formControlName="correo" placeholder="Corre" />
+              </div>
+              <div class="col-4">
+                <h6 class="poppinsMedium">Dirección</h6>
+                <input type="text" class="poppinsLight form__field form-control text-left" name="direccion"
+                formControlName="direccion" placeholder="Direccion" />
+              </div>
+              <div class="col-4">
+                <h6 class="poppinsMedium">Ciudad</h6>
+                <input type="text" class="poppinsLight form__field form-control text-left" name="ciudad"
+                formControlName="ciudad" placeholder="Ciudad" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer mb-2">
+        <button type="submit" class="btn btn-secondary mr-4" (click)='createCliente()'>Crear cliente</button>
+        <button type="button" class="btn btn-primary ml-2" (click)='closeModal()'>Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show" id="backdrop" style="display: none;"></div>

@@ -1,0 +1,153 @@
+<div class="card">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 mb-4">
+        <h4>Productos</h4>
+        <table>
+          <tr class="poppinsMedium">
+            <th *ngFor="let col of columns">{{col}}</th>
+            <th class="thNormal">Precio Base</th>
+            <th class="thNormal">IVA</th>
+            <th id="tableCorner" class="poppinsMedium text-center">Qubit</th>
+          </tr>
+          <tr class="poppinsLight" *ngFor="let i of productsCompra; let index=index;">
+            <td *ngFor="let col of columnsKey">
+              <input attr.list="{{'id'+col}}" [(ngModel)]="i[col]" class="inputTable" *ngIf="col!='cantidad'"
+                (change)="selectProduct($event,col)"
+                [attr.disabled]="(col=='precio' || index!=(productsCompra.length-1)) ? '' : null">
+              <input [(ngModel)]="i[col]" class="inputTable" *ngIf="col=='cantidad'" (change)=" calculaValores()"
+                [attr.disabled]="(index!=edit) ? '' : null">
+              <datalist id="{{'id'+col}}" *ngIf="col!='precio'">
+                <option id="{{pindex}}" *ngFor="let singProd of inventario| unique:col ;let pindex=index">
+                  {{singProd[col]}}
+                </option>
+              </datalist>
+            </td>
+            <td>{{i['pbase']}}</td>
+            <td>{{i['iva']}}</td>
+            <td class="d-flex justify-content-around qubitIcons" *ngIf="index==(productsCompra.length-1)">
+              <button id="plusElement" class="btn-plus">
+                <fa-icon [icon]="faPlus" (click)='addProduct(index)'></fa-icon>
+              </button>
+              <button class="searchIcon">
+                <fa-icon [icon]="faSearch" class="icon" (click)='searchInventario()'></fa-icon>
+              </button>
+              <img (click)="clearProduct(index)" style="cursor: pointer; margin-top: 2px;"
+                src="../../../assets/images/iconos/delete.svg" height="15px" alt="">
+            </td>
+            <td class="d-flex justify-content-around qubitIcons" *ngIf="index!=(productsCompra.length-1)">
+              <img class="editIcons" [src]="(index!=edit)? editIcon : checkIcon" (click)="editCompra(index)"
+                height="15px" alt="">
+              <img class="editIcons" src="../../../../assets/images/iconos/delete.svg" (click)="deleteProduct(index)"
+                height="15px" alt="">
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-9">
+        <div class="row">
+          <div class="col-md-10">
+            <h4>Observaciones</h4>
+            <input type="text" class="form__field" [(ngModel)]="comentario" autocomplete="off" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <h4>Forma de pago</h4>
+            <div class="selectdiv">
+              <select class="form__field" [(ngModel)]="seleccionado">
+                <option value="Efectivo" selected>Efectivo</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <table class="tableCambio">
+              <tbody class="tableCambio">
+                <tr id="trTotalVenta">
+                  <td>Recibe:</td>
+                  <td><input type="text" class="recibeInput" [(ngModel)]="recibeInput"
+                      (ngModelChange)="calculaCambio()">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-4">
+            <table class="tableCambio">
+              <tbody class="tableCambio">
+                <tr id="trTotalVenta">
+                  <td>Cambio:</td>
+                  <td>{{cambioCalcule | currency : '$': 'symbol':'1.0-0'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <table class="tableBottom">
+          <tbody class="tableBottom">
+            <tr class="tableBottom">
+              <td>Subtotal:</td>
+              <td>{{subtotal | currency : '$': 'symbol':'1.0-0' }}</td>
+            </tr>
+            <tr>
+              <td>Descuento:  -</td>
+              <td><input type="text" class="recibeInput" [(ngModel)]="descuento"
+                (ngModelChange)="calculaValores()"></td>
+            </tr>
+            <!-- <tr *ngIf="templateFactura">
+              <td>Base liquidación:</td>
+              <td>$81.820</td>
+            </tr> -->
+            <tr id="trTotalVenta">
+              <td>Total Venta:</td>
+              <td>{{totalVenta | currency : '$': 'symbol':'1.0-0'}}</td>
+            </tr>
+            <tr>
+              <td>IVA:</td>
+              <td>{{iva | currency : '$': 'symbol':'1.0-0'}}</td>
+            </tr>
+            <tr *ngIf="!templateFactura">
+              <td>Abono:</td>
+              <td><input type="text" class="recibeInput" [(ngModel)]="abono"
+                (ngModelChange)="calculaValores()"></td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="tableBottom" *ngIf="templateFactura">
+          <tbody class="tableBottom">
+            <tr class="ContainerTableFactura">
+              <td>Valor Total:</td>
+              <td>{{total | currency : '$': 'symbol':'1.0-0'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <table class="tableBottom" *ngIf="!templateFactura">
+          <tbody class="tableBottom">
+            <tr class="ContainerTableFactura">
+              <td>Saldo:</td>
+              <td>{{saldo | currency : '$': 'symbol':'1.0-0'}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="containerButtoms">
+          <button type="submit" class="btn mt-3 Cancelar">Cancelar</button>
+          <button type="submit" class="btn mt-3 Pagar" (click)="validateInfo()">Pagar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="inventarioModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
+  role="dialog">
+  <app-inventario-modal></app-inventario-modal>
+</div>
+
+<div class="modal-backdrop fade show" id="backdrop" style="display: none;"></div>

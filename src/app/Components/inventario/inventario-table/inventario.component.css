@@ -1,0 +1,65 @@
+.qubitIcons{
+    border: none;
+    background-color: white;
+    padding: 7px;
+  }
+  .inputEdit{
+    font-family: Poppins-Light;
+    padding: 0px;
+    background-color: white;
+    border: none;
+    width: 100%;
+    color: #4D5DB7;
+    text-align: center;
+    font-size: 14px;
+  }
+  .inputEdit:focus{
+    font-weight: 600;
+    outline: none;
+  }
+  .inputTable{
+    font-family: Poppins-Light;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+    width: 95%;
+    color: #4D5DB7;
+    text-align: left;
+    font-size: 12px;
+  }
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .editIcons {
+    cursor: pointer;
+    margin-right: 3px;
+  }
+  .btn-plus {
+  padding: 0px 5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background-color: #343E7D;
+  color: white;
+  border: #343E7D;
+}
+
+.dropdown-menu {
+  min-width: 10rem;
+}
+
+.dropdown-menu li {
+  padding: 0.4rem;
+}
+
+.dropdown-menu li a {
+  color: #343E7D;
+  text-decoration: none;
+}
+.dropdown .btn-primary.focus, .btn-primary:focus {
+  color: #fff;
+  background-color: #343E7D;
+  border-color: #343E7D;
+}

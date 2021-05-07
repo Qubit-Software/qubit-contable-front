@@ -1,0 +1,180 @@
+@font-face {
+  font-family: 'Poppins-Light';
+  src: url('assets/Fonts/Poppins-Light.ttf');
+}
+
+@font-face {
+  font-family: 'Poppins-Medium';
+  src: url('assets/Fonts/Poppins-Medium.ttf');
+}
+
+.poppinsLight {
+  font-family: Poppins-Light;
+  color: #343E7D;
+}
+
+.poppinsMedium {
+  font-family: Poppins-Medium;
+  color: #343E7D;
+}
+
+/*-----------------Model Style------------------*/
+
+#content {
+  flex: 0 0 82.333333%;
+  max-width: 82.333333%;
+  position: relative;
+}
+
+.sidebar {
+  position: fixed;
+  max-width: 17.666667%;
+}
+
+#sideMenu {
+  flex: 0 0 17.666667%;
+  max-width: 17.666667%;
+  position: relative;
+}
+
+body {
+  background-color: #E9ECF6;
+}
+
+/*-----------------Model Style Ends------------------*/
+
+/*-----------------Car Styles----------------------*/
+
+.card {
+  margin: 2rem;
+  padding: 2rem 2rem 2rem 2rem;
+  border: 1px solid #ffffff;
+  border-radius: 20px;
+  box-shadow: 3px 5px 15px 1px rgba(0, 0, 0, 0.2)
+}
+
+/*-----------------Car Styles Ends----------------------*/
+
+/*-----------------Table Styles Ends----------------------*/
+
+table, td, th {
+  color: #4D5DB7;
+  background-color: #E9ECF6;
+  border: 1px solid #ADB7F0;
+  text-align: left;
+  font-size: 12px;
+}
+
+th, td {
+  padding: 5px;
+}
+
+table {
+  width: 100%;
+}
+
+.pagination /deep/ .ngx-pagination .current {
+  background: #4D5DB7;
+  clip-path: circle(45% at 50% 50%);
+  margin: 1rem;
+}
+
+#tableCorner {
+  background-color: #4D5DB7;
+  color: white;
+}
+
+/*-----------------Table Styles Ends----------------------*/
+
+/*-----------------Button styles----------------------*/
+
+.btn {
+  background-color: #343E7D;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #21274d;
+  color: white;
+}
+
+button:focus {
+  border: none;
+  outline: none;
+}
+
+/*-----------------Button styless Ends----------------------*/
+
+/*__________________Serach div styles_____________________-*/
+
+#searchDiv {
+  padding-left: 2rem;
+}
+
+#search {
+  border-radius: 1.25rem!important;
+  width: 60%;
+  margin: auto;
+  background-color: #4D5DB7;
+  color: white;
+  background-image: url(assets/images/iconos/search.png);
+  background-size: 4%;
+  background-repeat: no-repeat;
+  text-indent: 5%;
+  background-position: 10px 10px;
+}
+
+/*__________________Search  styles ends_____________________-*/
+
+/*__________________UserIcon  styles ends_____________________-*/
+
+#profilePic {
+  clip-path: circle(50% at 50% 50%);
+  background-color: #6f6e6e26;
+}
+
+/*__________________UserIcon  styles ends_____________________-*/
+
+/*______________________Sweet Alert  styles _____________________-*/
+
+.swal2-popup {
+  padding: 0rem !important;
+}
+
+.swal2-header {
+  padding: 0rem !important;
+}
+
+.swal2-header h2 {
+  color: #343E7D !important;
+  font-family: Poppins-Medium;
+}
+
+.swal2-actions {
+  padding: 1rem 0rem !important;
+  margin: 0rem !important;
+}
+.swal2-styled.swal2-confirm {
+  background-color: #343E7D !important;
+  color: white !important;
+}
+.swal2-styled.swal2-deny{
+  background-color: #ADB7F0 !important;
+}
+.swal2-styled.swal2-cancel{
+  background-color: #9299B9 !important;
+}
+.swal2-loader {
+  width: 3.2em !important;
+  height: 3.2em !important;
+  border-color: #4d5db7 transparent #4d5db7 transparent !important;
+}
+.swal2-icon.swal2-warning{
+  border-color: #343E7D !important;
+  color: #343E7D !important;
+}
+.swal2-content {
+  font-family: Poppins-Light !important;
+}
+
+/*__________________Sweet Alert styles ends_____________________-*/

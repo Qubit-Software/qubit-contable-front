@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "qubit-contable": {
+      "hosting": {
+        "Front-end": [
+          "qubit-contable"
+        ]
+      }
+    }
+  }
+}

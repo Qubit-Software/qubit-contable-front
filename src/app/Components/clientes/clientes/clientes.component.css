@@ -1,0 +1,99 @@
+.container {
+  padding: 3vh 2vh 2vh 9vh;
+}
+
+h4 {
+  color: #343E7D;
+  margin-bottom: 1%;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form__field {
+  border: 0;
+  border-bottom: 1px solid#DAE0F6;
+  outline: 0;
+  font-size: 0.8rem;
+  color: #4D5DB7;
+  padding: 0px 10px 0px;
+  background: transparent;
+  transition: border-color 0.2s;
+  margin-bottom: 6%;
+}
+.form__field:focus{
+  transition: 0.09s;
+  border-bottom: 3px solid#343E7D;
+  border-width: 3px;
+  border-image-slice: 1;
+  box-shadow: none;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.btn-floating {
+  position: absolute;
+  top: 2vh;
+  right: 4vh;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  background-color: #343E7D;
+  color: white;
+  border: #343E7D;
+}
+
+.btn-floating:hover {
+  background-color: #21274d;
+  border: #21274d;
+}
+
+.inputCC {
+  display: flex;
+  width: 100%;
+}
+
+/* Style the form icons */
+.icon {
+  position: absolute;
+  padding: 10px;
+  cursor: pointer;
+  color: #343E7D;
+  min-width: 50px;
+  right: 1vh;
+}
+
+/******************** Modal Styles ***************************/
+
+.btn-primary{
+  border-color: #21274d;
+}
+.modal-header {
+  background: #4D5DB7;
+  color: white;
+  padding: 0.2rem;
+}
+
+.close {
+  color: white;
+  text-shadow: none;
+}
+
+.modal-footer {
+  justify-content: center;
+  padding: 0rem;
+  padding-bottom: 0.8rem;
+  border: none;
+}
+
+div.modal-body div h6 {
+  margin: 0;
+}
+
+.modal-dialog{
+  max-width: 60vw;
+}
+
+/******************** Modal Styles ends***************************/

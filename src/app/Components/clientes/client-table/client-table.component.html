@@ -1,0 +1,47 @@
+
+  <div class="row">
+    <div id="searchDiv" class="col">
+      <input id="search" type="text" class="form-control " [(ngModel)]="searchText">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <table>
+          <tr class="poppinsMedium">
+            <th>Cedula</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Telefono</th>
+            <th>Direccion</th>
+            <th>Ciudad</th>
+            <th id="tableCorner" class="poppinsMedium text-center">Qubit</th>
+          </tr>
+          <tr class="poppinsLight"
+            *ngFor="let i of consumidores | filter:searchText:'nombre' | paginate: {itemsPerPage: 13, currentPage:page}  ; let index = index">
+            <td><input type="number" [className]="(index!=edit) ? 'inputTable' : 'inputEdit'" [(ngModel)]="i.cedula"
+                [attr.disabled]="(index!=edit) ? '' : null" /></td>
+            <td><input type="text" [className]="(index!=edit) ? 'inputTable' : 'inputEdit'" [(ngModel)]="i.nombre"
+                [attr.disabled]="(index!=edit) ? '' : null" /></td>
+            <td><input type="text" [className]="(index!=edit) ? 'inputTable' : 'inputEdit'" [(ngModel)]="i.correo"
+                [attr.disabled]="(index!=edit) ? '' : null" /></td>
+            <td><input type="number" [className]="(index!=edit) ? 'inputTable' : 'inputEdit'" [(ngModel)]="i.telefono"
+                [attr.disabled]="(index!=edit) ? '' : null" /></td>
+            <td><input type="text" [className]="(index!=edit) ? 'inputTable' : 'inputEdit'" [(ngModel)]="i.direccion"
+                [attr.disabled]="(index!=edit) ? '' : null" /></td>
+            <td><input type="text" [className]="(index!=edit) ? 'inputTable' : 'inputEdit'" [(ngModel)]="i.ciudad"
+                [attr.disabled]="(index!=edit) ? '' : null" /></td>
+            <td class="d-flex justify-content-around qubitIcons">
+              <img class="editIcons" [src]="(index!=edit)? editIcon : checkIcon"
+                (click)="(index!=edit)? disabledEdit(index) : updateConsumidor(index)" height="15px" alt="">
+              <img class="editIcons" src="../../../../assets/images/iconos/delete.svg" (click)="deleteConsumidor(index)"
+                height="15px" alt="">
+            </td>
+          </tr>
+        </table>
+        <pagination-controls (pageChange)="page = $event" responsive="true" previousLabel="" nextLabel=""
+          class="pagination mx-auto mt-4 poppinsLight"></pagination-controls>
+
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,48 @@
+<div class="row">
+  <div id="searchDiv" class="col-md-8">
+    <input id="search" type="text" class="form-control" [(ngModel)]="searchText" autocomplete="off">
+  </div>
+  <div class="dropdown col-md-4">
+    <button class="btn btn-primary dropdown-toggle poppinsLight" type="button" data-toggle="dropdown"
+      *ngIf="searchHeader.length>0">{{searchHeader[0]['nombre']}}
+      <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li *ngFor="let header of searchHeader | slice:1 ; let i=index">
+        <a (click)="change(i+1)" style="cursor: pointer;">{{header['nombre']}}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <table>
+        <tr class="poppinsMedium">
+          <th *ngFor="let col of columns">{{col}}</th>
+          <th id="tableCorner" class="poppinsMedium text-center">Qubit</th>
+        </tr>
+        <tr class="poppinsLight"
+          *ngFor="let i of inventario | filter:searchText:((searchHeader[0]==null)?'':searchHeader[0]['id']) | paginate: {itemsPerPage: 13, currentPage:page}  ; let index = index">
+          <th *ngFor="let col of columnsKey"><input type="text" [ngClass]="{
+                'inputTable':index!=edit,
+                'inputEdit':index==edit,
+                'recibeInput':col === 'precio'}" [(ngModel)]="i[col]" [attr.disabled]="(index!=edit) ? '' : null" />
+          </th>
+          <td class="d-flex justify-content-around qubitIcons" *ngIf="index==0">
+            <button (click)='CreateInventario(index)' class="btn-plus">
+              <fa-icon [icon]="faPlus"></fa-icon>
+            </button>
+          </td>
+          <td class="d-flex justify-content-around qubitIcons" *ngIf="index!=0">
+            <img class="editIcons" [src]="(index!=edit)? editIcon : checkIcon"
+              (click)="(index!=edit)? disabledEdit(index) : updateConsumidor(index)" height="15px" alt="">
+            <img class="editIcons" src="../../../../assets/images/iconos/delete.svg" (click)="deleteConsumidor(index)"
+              height="15px" alt="">
+          </td>
+        </tr>
+      </table>
+      <pagination-controls (pageChange)="page = $event" responsive="true" previousLabel="" nextLabel=""
+        class="pagination mx-auto mt-4 poppinsLight"></pagination-controls>
+    </div>
+  </div>
+</div>
