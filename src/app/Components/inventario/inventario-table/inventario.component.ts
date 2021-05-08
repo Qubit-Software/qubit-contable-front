@@ -32,7 +32,6 @@ export class InventarioComponent implements OnInit {
   constructor(private inventarioService: InventarioService, private fb: FormBuilder, private helpers: HelperFunctionsService) {
     inventarioService.headersInventario$.subscribe((newObject: object) => {
       this.orderHeaders = newObject['headers'];
-      this.getSearchHeaders()
     });
     inventarioService.inventario$.subscribe((newInventario: object[]) => {
       this.inventario = newInventario;
