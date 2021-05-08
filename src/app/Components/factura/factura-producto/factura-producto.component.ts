@@ -30,6 +30,7 @@ export class FacturaProductoComponent implements OnInit {
   faPlus = faPlus;
   faSearch = faSearch;
   productsCompra = new Array();
+  tempStock: Map<number, object[]> = new Map();
   selectedItem: string = '';
   editIcon = '../../../assets/images/iconos/edit-button.png';
   checkIcon = '../../../assets/images/iconos/checked.png';
@@ -57,12 +58,16 @@ export class FacturaProductoComponent implements OnInit {
     order.inventarioItems$.subscribe((newObject: object) => {
       this.inventarioItemsSearch = newObject['items'];
       if (newObject['selectItem'] != null) {
-        let index = this.productsCompra.length - 1;
-        this.productsCompra[index] = JSON.parse(JSON.stringify(newObject['selectItem']));
-        this.productsCompra[index]['cantidad'] = 1;
-        this.edit = index;
-        this.calculaVal(index);
-        this.calculaValores();
+        let validate = this.validateStock(newObject['selectItem']['cantidad'], 0);
+        if (validate) {
+          this.tempStock[newObject['selectItem']['id']] = newObject['selectItem']['cantidad'];
+          let index = this.productsCompra.length - 1;
+          this.productsCompra[index] = JSON.parse(JSON.stringify(newObject['selectItem']));
+          this.productsCompra[index]['cantidad'] = 1;
+          this.edit = index;
+          this.calculaVal(index);
+          this.calculaValores();
+        }
       }
     });
     order.consumidor$.subscribe((newConsumidor: ConsumidorModel) => {
@@ -190,12 +195,16 @@ export class FacturaProductoComponent implements OnInit {
       let value = text.target.value;
       const items = this.inventario.filter(item => item[col] == value);
       if (items.length == 1) {
-        let index = this.productsCompra.length - 1;
-        this.productsCompra[index] = JSON.parse(JSON.stringify(items[0]));
-        this.productsCompra[index]['cantidad'] = 1;
-        this.edit = index;
-        this.calculaVal(index);
-        this.calculaValores();
+        let validate = this.validateStock(items[0]['cantidad'], 0);
+        if (validate) {
+          this.tempStock[items[0]['id']] = items[0]['cantidad'];
+          let index = this.productsCompra.length - 1;
+          this.productsCompra[index] = JSON.parse(JSON.stringify(items[0]));
+          this.productsCompra[index]['cantidad'] = 1;
+          this.edit = index;
+          this.calculaVal(index);
+          this.calculaValores();
+        }
       } else {
         this.openModal();
         this.inventarioItemsSearch = items;
@@ -205,6 +214,20 @@ export class FacturaProductoComponent implements OnInit {
         }
         this.order.chargeItemsInventario(object);
       }
+    }
+  }
+  validateStock(stock, less): boolean {
+    let diferencia = stock - less;
+    if (diferencia < 1) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No hay inventario disponible',
+        confirmButtonText: 'Ok',
+      });
+      return false
+    } else {
+      return true
     }
   }
   calculaVal(index) {
@@ -230,9 +253,18 @@ export class FacturaProductoComponent implements OnInit {
         this.iva = 0;
         this.total = 0;
         this.productsCompra.forEach(element => {
-          this.iva = this.iva + (this.getNumber(element['iva']) * element['cantidad'])
-          this.subtotal = this.subtotal + (this.getNumber(element['pbase']) * element['cantidad']);
-          this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
+          let validate = this.validateStock(this.tempStock[element['id']], element['cantidad'] - 1)
+          if (validate) {
+            this.iva = this.iva + (this.getNumber(element['iva']) * element['cantidad'])
+            this.subtotal = this.subtotal + (this.getNumber(element['pbase']) * element['cantidad']);
+            this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
+          }
+          else {
+            element['cantidad'] = 1;
+            this.iva = this.iva + (this.getNumber(element['iva']) * element['cantidad'])
+            this.subtotal = this.subtotal + (this.getNumber(element['pbase']) * element['cantidad']);
+            this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
+          }
         });
         this.totalVenta = this.subtotal - (this.getNumber(this.descuento));
         this.total = this.total - (this.getNumber(this.descuento));
@@ -339,7 +371,6 @@ export class FacturaProductoComponent implements OnInit {
       });
       return
     }
-    console.log(this.productsCompra.length);
     if (this.productsCompra.length == 1 || this.productsCompra == null) {
       Swal.fire({
         icon: 'error',
@@ -392,10 +423,16 @@ export class FacturaProductoComponent implements OnInit {
       let products: object[] = new Array();
       this.productsCompra.forEach(element => {
         if ("id" in element || element['id'] != null) {
+          let splitHeaders = this.headerPos.split(',');
+          let tempNom = '';
+          splitHeaders.forEach(el => {
+            tempNom = tempNom + element[el] + ' ';
+            return tempNom
+          });
           let prod = {
-            'nombre': element[this.headerPos],
+            'nombre': tempNom,
             'cantidad': String(element['cantidad']),
-            // 'precio': HelperFunctions.formatter.format((this.getNumber(element['precio'])) * element['cantidad'])
+            'precio': this.helpers.formatter.format((this.getNumber(element['precio'])) * element['cantidad'])
           };
           products.push(prod);
         }
@@ -408,6 +445,7 @@ export class FacturaProductoComponent implements OnInit {
         this.helpers.formatter.format(recibe), this.helpers.formatter.format(this.cambioCalcule), factura, this.consumidor.nombre).subscribe(res => {
           this.ventas.createVenta(this.sucursal.empresa.id, this.total, this.iva, fecha1, this.seleccionado, this.comentario, this.sucursal.sucursal.id,
             this.consumidor.id, productArray).subscribe(res => {
+              let tempOrder = JSON.parse(JSON.stringify(this.productsCompra));
               this.order.UpdateConsumidor(new ConsumidorModel());
               this.productsCompra = new Array();
               this.newitemCompra();
@@ -421,6 +459,7 @@ export class FacturaProductoComponent implements OnInit {
               Swal.fire('Ticket impreso',
                 'El ticket se ha dispensado con exito',
                 'success');
+              this.lessInventory(tempOrder);
             }, (err) => {
               Swal.close();
               Swal.fire({
@@ -440,6 +479,33 @@ export class FacturaProductoComponent implements OnInit {
           console.log(err);
         });
     })
+  }
+  lessInventory(order) {
+    let data = new Array()
+    order.forEach(element => {
+      if ("id" in element || element['id'] != null) {
+        let newcantida = this.tempStock[element['id']] - element['cantidad'];
+        let dataItem = {
+          'id': element['id'],
+          'newcantidad': newcantida
+        }
+        data.push(dataItem);
+      }
+    });
+    if (this.helpers.validateIdEmpresa()) {
+      let inventarioName = localStorage.getItem('inventario');
+      this.inventarioService.lessInventory(inventarioName, data).subscribe(res => {
+
+      })
+    } else {
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Se ha presentado un error inesperado'
+      });
+      return null
+    }
   }
 
 }

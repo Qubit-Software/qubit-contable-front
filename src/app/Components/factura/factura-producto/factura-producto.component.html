@@ -15,7 +15,7 @@
               <input attr.list="{{'id'+col}}" [(ngModel)]="i[col]" class="inputTable" *ngIf="col!='cantidad'"
                 (change)="selectProduct($event,col)"
                 [attr.disabled]="(col=='precio' || index!=(productsCompra.length-1)) ? '' : null">
-              <input [(ngModel)]="i[col]" class="inputTable" *ngIf="col=='cantidad'" (change)=" calculaValores()"
+              <input [(ngModel)]="i[col]" type="number" class="inputTable" *ngIf="col=='cantidad'" (change)=" calculaValores()"
                 [attr.disabled]="(index!=edit) ? '' : null">
               <datalist id="{{'id'+col}}" *ngIf="col!='precio'">
                 <option id="{{pindex}}" *ngFor="let singProd of inventario| unique:col ;let pindex=index">

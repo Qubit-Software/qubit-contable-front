@@ -75,7 +75,18 @@ export class InventarioService {
         })
       );
   }
-
+  lessInventory(inventario,data){
+    const authData = {
+      data
+    };
+    console.log(authData);
+    return this.http.put(
+      `${this.url}/lessinventory/${inventario}`, authData).pipe(
+        map(resp => {
+          return resp;
+        })
+      );
+  }
   deleteOne(inventario, id) {
     return this.http.delete(
       `${this.url}/delete/${inventario}/${id}`).pipe(
