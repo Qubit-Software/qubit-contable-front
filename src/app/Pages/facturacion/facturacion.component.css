@@ -20,8 +20,11 @@
   ;
 }
 
+.dropdown{
+  margin: 1rem 2rem;
+}
 .dropdown-menu {
-  min-width: 20rem;
+  min-width: 10rem;
 }
 
 .dropdown-menu li {

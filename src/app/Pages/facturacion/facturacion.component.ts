@@ -8,18 +8,20 @@ import { Component, OnInit } from '@angular/core';
 export class FacturacionComponent implements OnInit {
 
   templateParent = true;
-  facturacionPrimary = 'Factura de Venta MNS 145'
-  facturacionSecond = 'Apartado'
+  typeFacturacion: string[] = new Array();
   constructor() {
   }
 
   ngOnInit(): void {
+    this.getTypes();
   }
-
-  change() {
-    let temp = this.facturacionPrimary;
-    this.facturacionPrimary = this.facturacionSecond;
-    this.facturacionSecond = temp;
-    this.templateParent = !this.templateParent;
+  getTypes(){
+    this.typeFacturacion[0]='Facturacion';
+    this.typeFacturacion[1]='Apartado';
+    this.typeFacturacion[2]='Credito';
+  }
+  change(i) {
+    [this.typeFacturacion[0], this.typeFacturacion[i]] = [this.typeFacturacion[i], this.typeFacturacion[0]];
+    
   }
 }

@@ -1,9 +1,20 @@
-<div class="dropdown">
-  <button class="btn btn-primary dropdown-toggle poppinsMedium mt-2" type="button" data-toggle="dropdown">{{facturacionPrimary}}
-  <span class="caret"></span></button>
-  <ul class="dropdown-menu">
-    <li><a (click)="change()" style="cursor: pointer;">{{facturacionSecond}}</a></li>
-  </ul>
+<div class="row" style="width: 100%;">
+  <div class="col-md-8">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle poppinsLight" type="button" data-toggle="dropdown"
+        *ngIf="typeFacturacion.length>0">{{typeFacturacion[0]}}
+        <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        <li *ngFor="let type of typeFacturacion | slice:1 ; let i=index">
+          <a (click)="change(i+1)" style="cursor: pointer;">{{type}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-4 text-right">
+    <app-profile-info></app-profile-info>
+  </div>
 </div>
+
 <app-clientes></app-clientes>
-<app-factura-producto [templateFactura]="templateParent"></app-factura-producto>
+<app-factura-producto [typeFacturacion]="typeFacturacion[0]"></app-factura-producto>

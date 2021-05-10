@@ -15,8 +15,8 @@
               <input attr.list="{{'id'+col}}" [(ngModel)]="i[col]" class="inputTable" *ngIf="col!='cantidad'"
                 (change)="selectProduct($event,col)"
                 [attr.disabled]="(col=='precio' || index!=(productsCompra.length-1)) ? '' : null">
-              <input [(ngModel)]="i[col]" type="number" class="inputTable" *ngIf="col=='cantidad'" (change)=" calculaValores()"
-                [attr.disabled]="(index!=edit) ? '' : null">
+              <input [(ngModel)]="i[col]" type="number" class="inputTable" *ngIf="col=='cantidad'"
+                (change)=" calculaValores()" [attr.disabled]="(index!=edit) ? '' : null">
               <datalist id="{{'id'+col}}" *ngIf="col!='precio'">
                 <option id="{{pindex}}" *ngFor="let singProd of inventario| unique:col ;let pindex=index">
                   {{singProd[col]}}
@@ -98,9 +98,9 @@
               <td>{{subtotal | currency : '$': 'symbol':'1.0-0' }}</td>
             </tr>
             <tr>
-              <td>Descuento:  -</td>
-              <td><input type="text" class="recibeInput" [(ngModel)]="descuento"
-                (ngModelChange)="calculaValores()"></td>
+              <td>Descuento: -</td>
+              <td><input type="text" class="recibeInput" [(ngModel)]="descuento" (ngModelChange)="calculaValores()">
+              </td>
             </tr>
             <!-- <tr *ngIf="templateFactura">
               <td>Base liquidación:</td>
@@ -114,14 +114,13 @@
               <td>IVA:</td>
               <td>{{iva | currency : '$': 'symbol':'1.0-0'}}</td>
             </tr>
-            <tr *ngIf="!templateFactura">
+            <tr *ngIf="typeFacturacion!='Facturacion'">
               <td>Abono:</td>
-              <td><input type="text" class="recibeInput" [(ngModel)]="abono"
-                (ngModelChange)="calculaValores()"></td>
+              <td><input type="text" class="recibeInput" [(ngModel)]="abono" (ngModelChange)="calculaValores()"></td>
             </tr>
           </tbody>
         </table>
-        <table class="tableBottom" *ngIf="templateFactura">
+        <table class="tableBottom" *ngIf="typeFacturacion=='Facturacion'">
           <tbody class="tableBottom">
             <tr class="ContainerTableFactura">
               <td>Valor Total:</td>
@@ -129,7 +128,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="tableBottom" *ngIf="!templateFactura">
+        <table class="tableBottom" *ngIf="typeFacturacion!='Facturacion'">
           <tbody class="tableBottom">
             <tr class="ContainerTableFactura">
               <td>Saldo:</td>

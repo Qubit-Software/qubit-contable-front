@@ -9,6 +9,7 @@ import { SucursalService } from 'src/app/Services/sucursal.service';
 import { VentasService } from 'src/app/Services/ventas.service';
 import { PosService } from 'src/app/Services/pos.service';
 import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
+import { SaldosApartadosService } from 'src/app/Services/saldos-apartados.service';
 
 @Component({
   selector: 'app-factura-producto',
@@ -16,7 +17,7 @@ import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service
   styleUrls: ['./factura-producto.component.css']
 })
 export class FacturaProductoComponent implements OnInit {
-  @Input() templateFactura: boolean;
+  @Input() typeFacturacion: string;
 
   //Porcentaje del iva
   ivaPercent = 0.19;
@@ -50,7 +51,7 @@ export class FacturaProductoComponent implements OnInit {
   headerPos: string = '';
 
   constructor(private inventarioService: InventarioService, private order: OrderService, private sucursal: SucursalService,
-    private ventas: VentasService, private pos: PosService, private helpers: HelperFunctionsService) {
+    private ventas: VentasService, private pos: PosService, private helpers: HelperFunctionsService, private saldos: SaldosApartadosService) {
     inventarioService.headersInventario$.subscribe((newObject: object) => {
       this.orderHeaders = newObject['headers'];
       this.headerPos = newObject['headerPos'];
@@ -240,7 +241,7 @@ export class FacturaProductoComponent implements OnInit {
   calculaCambio() {
     let numberRecibe: number;
     numberRecibe = this.getNumber(this.recibeInput);
-    if (this.templateFactura) {
+    if (this.typeFacturacion == 'Facturacion') {
       this.cambioCalcule = numberRecibe - this.total;
     } else {
       this.cambioCalcule = numberRecibe - this.getNumber(this.abono);
@@ -248,42 +249,31 @@ export class FacturaProductoComponent implements OnInit {
   }
   calculaValores() {
     if (this.productsCompra.length != 0) {
-      if (this.templateFactura) {
-        this.subtotal = 0;
-        this.iva = 0;
-        this.total = 0;
-        this.productsCompra.forEach(element => {
-          let validate = this.validateStock(this.tempStock[element['id']], element['cantidad'] - 1)
-          if (validate) {
-            this.iva = this.iva + (this.getNumber(element['iva']) * element['cantidad'])
-            this.subtotal = this.subtotal + (this.getNumber(element['pbase']) * element['cantidad']);
-            this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
-          }
-          else {
-            element['cantidad'] = 1;
-            this.iva = this.iva + (this.getNumber(element['iva']) * element['cantidad'])
-            this.subtotal = this.subtotal + (this.getNumber(element['pbase']) * element['cantidad']);
-            this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
-          }
-        });
-        this.totalVenta = this.subtotal - (this.getNumber(this.descuento));
-        this.total = this.total - (this.getNumber(this.descuento));
-        this.saldo = this.total - (this.getNumber(this.abono));
-        this.cambioCalcule = this.total;
-      } else {
-        this.subtotal = 0;
-        this.iva = 0;
-        this.saldo = 0;
-        this.productsCompra.forEach(element => {
+      this.subtotal = 0;
+      this.iva = 0;
+      this.total = 0;
+      this.saldo = 0;
+      this.productsCompra.forEach(element => {
+        let validate = this.validateStock(this.tempStock[element['id']], element['cantidad'] - 1)
+        if (validate) {
           this.iva = this.iva + (this.getNumber(element['iva']) * element['cantidad'])
           this.subtotal = this.subtotal + (this.getNumber(element['pbase']) * element['cantidad']);
+          this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
           this.saldo = this.saldo + (this.getNumber(element['precio']) * element['cantidad']);
-        });
-        this.totalVenta = this.subtotal - (this.getNumber(this.descuento));
-        this.total = this.saldo - (this.getNumber(this.descuento));
-        this.saldo = this.saldo - (this.getNumber(this.descuento)) - (this.getNumber(this.abono));
-        this.cambioCalcule = this.getNumber(this.abono);
-      }
+        }
+        else {
+          element['cantidad'] = 1;
+          this.iva = this.iva + (this.getNumber(element['iva']) * element['cantidad'])
+          this.subtotal = this.subtotal + (this.getNumber(element['pbase']) * element['cantidad']);
+          this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
+          this.saldo = this.saldo + (this.getNumber(element['precio']) * element['cantidad']);
+        }
+      });
+      this.totalVenta = this.subtotal - (this.getNumber(this.descuento));
+      this.saldo = this.saldo - (this.getNumber(this.descuento)) - (this.getNumber(this.abono));
+      this.total = this.total - (this.getNumber(this.descuento));
+      this.saldo = this.total - (this.getNumber(this.abono));
+      this.cambioCalcule = this.total;
     }
   }
   searchInventario() {
@@ -391,10 +381,18 @@ export class FacturaProductoComponent implements OnInit {
     }
     if (this.sucursal.empresa == null) {
       this.sucursal.getSucursalInfo().subscribe(res => {
-        this.payOrder();
+        if (this.typeFacturacion == 'Facturacion') {
+          this.payOrder();
+        } else {
+          this.payApartado();
+        }
       });
     } else {
-      this.payOrder();
+      if (this.typeFacturacion == 'Facturacion') {
+        this.payOrder();
+      } else {
+        this.payApartado();
+      }
     }
   }
   payOrder() {
@@ -479,6 +477,87 @@ export class FacturaProductoComponent implements OnInit {
           console.log(err);
         });
     })
+  }
+  payApartado() {
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Espere por favor'
+    });
+    Swal.showLoading();
+    const date = new Date();
+    let fecha = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    let fecha1 = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    let productArray: object[] = new Array();
+    this.productsCompra.forEach(element => {
+      if ("id" in element || element['id'] != null) {
+        let products = {
+          "cantidad": element['cantidad'],
+          "inventarioId": element['id']
+        };
+        productArray.push(products);
+      }
+    });
+    let products: object[] = new Array();
+    this.productsCompra.forEach(element => {
+      if ("id" in element || element['id'] != null) {
+        let splitHeaders = this.headerPos.split(',');
+        let tempNom = '';
+        splitHeaders.forEach(el => {
+          tempNom = tempNom + element[el] + ' ';
+          return tempNom
+        });
+        let prod = {
+          'nombre': tempNom,
+          'cantidad': String(element['cantidad']),
+          'precio': this.helpers.formatter.format((this.getNumber(element['precio'])) * element['cantidad'])
+        };
+        products.push(prod);
+      }
+    });
+    let iva = this.getNumber(this.iva);
+    let descuento = this.getNumber(this.descuento);
+    let recibe = this.getNumber(this.recibeInput);
+    let abono = this.getNumber(this.abono);
+    let saldo = this.getNumber(this.saldo)
+    this.pos.posSaldo(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion, this.sucursal.sucursal.ciudad,
+      this.typeFacturacion, fecha, products, this.helpers.formatter.format(this.subtotal), this.helpers.formatter.format(iva), this.helpers.formatter.format(descuento), this.helpers.formatter.format(this.total),
+      this.helpers.formatter.format(abono), this.helpers.formatter.format(saldo), this.helpers.formatter.format(recibe), this.helpers.formatter.format(this.cambioCalcule), this.consumidor.nombre).subscribe(res => {
+        this.saldos.createSaldoApartado(this.sucursal.empresa.id, this.typeFacturacion, this.total, this.saldo, false, fecha1, this.comentario, this.sucursal.sucursal.id,
+          this.consumidor.id, abono, this.seleccionado, productArray).subscribe(res => {
+            let tempOrder = JSON.parse(JSON.stringify(this.productsCompra));
+            this.order.UpdateConsumidor(new ConsumidorModel());
+            this.productsCompra = new Array();
+            this.newitemCompra();
+            this.order.chargeItemsInventario(new Array())
+            this.recibeInput = '';
+            this.cambioCalcule = 0;
+            this.descuento = 0;
+            this.comentario = '';
+            this.calculaValores();
+            Swal.close();
+            Swal.fire('Ticket impreso',
+              'El ticket se ha dispensado con exito',
+              'success');
+            this.lessInventory(tempOrder);
+          }, (err) => {
+            Swal.close();
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Vuelve a intentarlo'
+            });
+            console.log(err);
+          });
+      }, (err) => {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se encuentra la impresora conectada'
+        });
+        console.log(err);
+      });
   }
   lessInventory(order) {
     let data = new Array()

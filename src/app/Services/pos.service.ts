@@ -32,7 +32,6 @@ export class PosService {
       idF,
       cliente
     };
-    // console.log(authData);
     return this.http.post(
       `${this.urlPos}/venta`, authData).pipe(
         map(resp => {
@@ -40,24 +39,29 @@ export class PosService {
         })
       );
   }
-  preVenta(nit, tel, direccion, ciudad, fecha, products, subtotal, valorServicio, totalServicio, total, cliente, mesa) {
+
+  posSaldo(nit, tel, direccion, ciudad, tipo, fecha, products, subtotal, iva, descuento, total, abono, saldo, efectivo,
+    cambio, cliente) {
     const authData = {
       nit,
       tel,
       direccion,
       ciudad,
+      tipo,
       fecha,
       products,
       subtotal,
-      valorServicio,
-      totalServicio,
+      iva,
+      descuento,
       total,
-      cliente,
-      mesa
+      abono,
+      saldo,
+      efectivo,
+      cambio,
+      cliente
     };
-    // console.log(authData);
     return this.http.post(
-      `${this.urlPos}/preventa`, authData).pipe(
+      `${this.urlPos}/saldo`, authData).pipe(
         map(resp => {
           return resp;
         })
@@ -84,17 +88,5 @@ export class PosService {
         })
       );
   }
-  posOrder(hora, mesa, products, idDevice) {
-    const authData = {
-      hora,
-      mesa,
-      products
-    };
-    return this.http.post(
-      `${this.urlPos}/order/${idDevice}`, authData).pipe(
-        map(resp => {
-          return resp;
-        })
-      );
-  }
+
 }
