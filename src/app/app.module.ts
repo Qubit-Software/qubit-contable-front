@@ -17,7 +17,7 @@ import { ClientTableComponent } from './Components/clientes/client-table/client-
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ReportsComponent } from './Components/Reports/reports/reports.component';
 import { ChartsModule } from 'ng2-charts';
-import { BalanceComponent } from './Components/Balance/balance/balance.component';
+import { BalanceComponent } from './Components/Balance/Saldos-Table/balance.component';
 import { FilterPipe } from './Pipes/filter.pipe';
 import { UniquePipe } from './Pipes/unique.pipe';
 import { environment } from "src/environments/environment";
@@ -30,6 +30,9 @@ import { FacturasComponent } from './Pages/facturas/facturas.component';
 import { ReportComponent } from './Pages/report/report.component';
 import { InventoryComponent } from './Pages/inventory/inventory.component';
 import { ProfileInfoComponent } from './Components/user/profile-info/profile-info.component';
+import { SaldosComponent } from './Pages/saldos/saldos.component';
+import { SaldoAbonoComponent } from './Components/Balance/saldo-abono/saldo-abono.component';
+import { AbonosComponent } from './Components/Balance/abonos/abonos.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,11 @@ import { ProfileInfoComponent } from './Components/user/profile-info/profile-inf
     InventarioComponent,
     InventarioModalComponent,
     FacturaTableComponent,
-    ProfileInfoComponent,],
+    ProfileInfoComponent,
+    SaldosComponent,
+    SaldoAbonoComponent,
+    AbonosComponent,
+],
   imports: [
     BrowserModule,
     AppRoutingModule,

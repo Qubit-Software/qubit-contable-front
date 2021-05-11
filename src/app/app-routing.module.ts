@@ -4,10 +4,11 @@ import { LogginComponent } from './Pages/login/login.component';
 import { HomeComponent } from './Pages/home/home.component';
 import { FacturacionComponent } from './Pages/facturacion/facturacion.component';
 import { ClientsComponent } from './Pages/clients/clients.component';
-import { BalanceComponent } from './Components/Balance/balance/balance.component';
 import { FacturasComponent } from './Pages/facturas/facturas.component';
 import { ReportComponent } from './Pages/report/report.component';
 import { InventoryComponent } from './Pages/inventory/inventory.component';
+import { SaldosComponent } from './Pages/saldos/saldos.component';
+import { AbonosComponent } from './Components/Balance/abonos/abonos.component';
 
 const routes: Routes = [
   { path: '', component: LogginComponent },
@@ -18,7 +19,11 @@ const routes: Routes = [
       { path: 'facturas', component: FacturasComponent },
       { path: 'reports', component: ReportComponent },
       { path: 'inventario', component: InventoryComponent },
-      { path: 'balance', component: BalanceComponent }
+      {
+        path: 'saldos', component: SaldosComponent, children: [
+          { path: 'abonos', component: AbonosComponent },
+        ]
+      }
     ]
   },
 ];

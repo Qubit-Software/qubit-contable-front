@@ -1,0 +1,59 @@
+<section>
+    <div class="row">
+        <div id="searchDiv" class="col">
+            <input id="search" type="text" class="form-control" [(ngModel)]="searchText" autocomplete="off">
+        </div>
+    </div>
+</section>
+<section>
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <table>
+                    <tr class="poppinsMedium">
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Valor de Venta</th>
+                        <th>Abono</th>
+                        <th>Saldo</th>
+                        <th>Tipo de saldo</th>
+                        <th id="tableCorner" class="poppinsMedium text-center">Qubit</th>
+                    </tr>
+                    <tr class="poppinsLight"
+                        *ngFor="let i of saldos| filter:searchText:'cliente' | paginate: {itemsPerPage: 12, currentPage:page}">
+                        <td>{{i.fecha | date : 'dd/MM/y'}}</td>
+                        <td>{{i.cliente}}</td>
+                        <td>{{i.total | currency : '$': 'symbol':'1.0-0'}}</td>
+                        <td>{{i.abono | currency : '$': 'symbol':'1.0-0'}}</td>
+                        <td>{{i.saldo | currency : '$': 'symbol':'1.0-0'}}</td>
+                        <td>{{i.tipo}}</td>
+                        <td class="d-flex justify-content-around qubitIcons">
+                            <button id="plusElement" class="btn-plus">
+                                <fa-icon [icon]="faPlus" (click)='addProduct(index)'></fa-icon>
+                            </button>
+                            <button class="searchIcon">
+                                <fa-icon [icon]="faSearch" class="icon" [routerLink]="['./abonos']"
+                                    [state]="{'idSaldo':i.id,'total':i.total }" (click)='openModal()'></fa-icon>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+                <div class="row mt-4">
+                    <div id="total" class="col-4 mx-auto">
+                        <p id="totalText">Total Saldos a Pagar: {{totalSaldos | currency : '$': 'symbol':'1.0-0'}}</p>
+                    </div>
+                </div>
+                <pagination-controls (pageChange)="page = $event" responsive="true" previousLabel="" nextLabel=""
+                    class="pagination mx-auto mt-4 poppinsLight"></pagination-controls>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="inventarioModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
+    role="dialog">
+    <router-outlet></router-outlet>
+</div>
+
+<div class="modal-backdrop fade show" id="backdrop" style="display: none;"></div>

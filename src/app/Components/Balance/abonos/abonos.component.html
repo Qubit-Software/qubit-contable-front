@@ -1,0 +1,47 @@
+<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title ml-3" id="exampleModalLabel">Abonos</h5>
+            <button type="button" class="close mr-2" aria-label="Close" (click)='closeModal()'>
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col">
+                        <table>
+                            <tr class="poppinsMedium">
+                                <th>Fecha</th>
+                                <th>Valor de Venta</th>
+                                <th>Abono</th>
+                                <th>Saldo</th>
+                                <th>Medio de pago</th>
+                                <!-- <th id="tableCorner" class="poppinsMedium text-center">Qubit</th> -->
+                            </tr>
+                            <tr class="poppinsLight"
+                                *ngFor="let i of abonos  | paginate: {itemsPerPage: 6, currentPage:page}">
+                                <td>{{i.fecha | date : 'dd/MM/y'}}</td>
+                                <td>{{i.total | currency : '$': 'symbol':'1.0-0'}}</td>
+                                <td>{{i.abono | currency : '$': 'symbol':'1.0-0'}}</td>
+                                <td>{{i.saldo | currency : '$': 'symbol':'1.0-0'}}</td>
+                                <td>{{i.tipo}}</td>
+                                <!-- <td class="d-flex justify-content-around qubitIcons">
+                                    <button id="plusElement" class="btn-plus">
+                                        <fa-icon [icon]="faPlus" (click)='addProduct(index)'></fa-icon>
+                                    </button>
+                                    <button class="searchIcon">
+                                        <fa-icon [icon]="faSearch" class="icon" [routerLink]="['./abonos']"
+                                            [state]="{'idSaldo':i.id }" (click)='openModal()'></fa-icon>
+                                    </button>
+                                </td> -->
+                            </tr>
+                        </table>
+                        <pagination-controls (pageChange)="page = $event" responsive="true" previousLabel=""
+                            nextLabel="" class="pagination mx-auto poppinsLight"></pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
