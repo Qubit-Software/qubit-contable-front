@@ -34,12 +34,19 @@ export class SaldosApartadosService {
         })
       );
   }
-  getVentasBySucursal(idEmpresa) {
-    let id = localStorage.getItem('sucursalId')
+  getSaldosBySucursal(id) {
     return this.http.get(
-      `${this.url}/getVentas/${idEmpresa}/${id}`).pipe(
+      `${this.url}/getAll/${id}`).pipe(
         map(resp => {
-          return resp['venta'];
+          return resp;
+        })
+      );
+  }
+  getAbonosById(id) {
+    return this.http.get(
+      `${this.url}/getAbonos/${id}`).pipe(
+        map(resp => {
+          return resp;
         })
       );
   }

@@ -118,7 +118,7 @@ button:focus {
   background-color: #4D5DB7;
   color: white;
   background-image: url(assets/images/iconos/search.png);
-  background-size: 4%;
+  background-size: 20px;
   background-repeat: no-repeat;
   text-indent: 5%;
   background-position: 10px 10px;

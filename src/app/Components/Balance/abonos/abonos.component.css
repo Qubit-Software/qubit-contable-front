@@ -1,0 +1,41 @@
+.pagination /deep/ .ngx-pagination{
+    margin: auto !important;
+  }
+  .pagination /deep/ pagination-template{
+    margin: auto;
+  }
+/******************** Modal Styles ***************************/
+
+.btn-primary{
+    border-color: #21274d;
+  }
+  .modal-header {
+    background: #4D5DB7;
+    color: white;
+    padding: 0.2rem;
+  }
+  
+  .close {
+    color: white;
+    text-shadow: none;
+  }
+  
+  .modal-footer {
+    justify-content: center;
+    padding: 0rem;
+    padding-bottom: 0.8rem;
+    border: none;
+  }
+  .modal-footer .btn{
+    width: 20%;
+    font-size: 1rem;
+    text-align: center;
+    padding: 1px 3px;
+    margin: 0px 2rem;
+}
+  .modal-dialog{
+    max-width: 60vw;
+  }
+  
+  /******************** Modal Styles ends***************************/
+  
