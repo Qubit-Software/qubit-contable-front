@@ -42,9 +42,40 @@ export class SaldosApartadosService {
         })
       );
   }
+  createAbono(saldosAbonoId, fecha, abono, tipopago, saldo) {
+    const authData = {
+      saldosAbonoId,
+      fecha,
+      abono,
+      tipopago,
+      saldo
+    };
+    return this.http.post(
+      `${this.url}/newabono`, authData).pipe(
+        map(resp => {
+          return resp;
+        })
+      );
+  }
+  getSaldoById(id, idEmpresa) {
+    return this.http.get(
+      `${this.url}/getOne/${id}/${idEmpresa}`).pipe(
+        map(resp => {
+          return resp;
+        })
+      );
+  }
   getAbonosById(id) {
     return this.http.get(
       `${this.url}/getAbonos/${id}`).pipe(
+        map(resp => {
+          return resp;
+        })
+      );
+  }
+  deleteOne(id) {
+    return this.http.delete(
+      `${this.url}/delete/${id}`).pipe(
         map(resp => {
           return resp;
         })

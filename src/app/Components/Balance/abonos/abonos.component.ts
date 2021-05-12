@@ -31,6 +31,7 @@ export class AbonosComponent implements OnInit {
         icon: 'info',
         text: 'Espere por favor'
       });
+      Swal.showLoading();
       this.saldosService.getAbonosById(id).subscribe(res => {
         let saldo = total;
         res['abonos'].forEach(element => {

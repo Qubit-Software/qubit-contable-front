@@ -5,6 +5,7 @@ import { SucursalService } from 'src/app/Services/sucursal.service';
 import Swal from 'sweetalert2';
 import { VentasService } from 'src/app/Services/ventas.service';
 import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
+import { InventarioService } from 'src/app/Services/inventario.service';
 
 @Component({
   selector: 'app-factura-table',
@@ -24,7 +25,8 @@ export class FacturaTableComponent implements OnInit {
   iva = 0;
   total = 0;
 
-  constructor(private venta: VentasService, private sucursal: SucursalService, private pos: PosService, private helpers: HelperFunctionsService) { }
+  constructor(private venta: VentasService, private sucursal: SucursalService, private pos: PosService, private helpers: HelperFunctionsService,
+    private inventarioService: InventarioService) { }
 
   ngOnInit(): void {
     this.currentDate.setHours(0, 0, 0, 0)
@@ -148,5 +150,66 @@ export class FacturaTableComponent implements OnInit {
       this.total = this.total + (+fatura.total)
     });
 
+  }
+  deleteVenta(index) {
+    Swal.fire({
+      title: '¿Desea eliminar el inventario?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: `Eliminar`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          allowOutsideClick: false,
+          icon: 'info',
+          text: 'Espere por favor'
+        });
+        Swal.showLoading();
+        if (this.helpers.validateIdEmpresa()) {
+          let idEmpresa = localStorage.getItem('empresaId');
+          let inventarioName = localStorage.getItem('inventario');
+          this.venta.getInventarioVentasByVentas(this.facturas[index].id, idEmpresa).subscribe(res => {
+            let data = new Array()
+            res['inventario'].forEach(element => {
+              let dataItem = {
+                'id': element['inventarioId'],
+                'newcantidad': element['cantidad']
+              }
+              data.push(dataItem);
+            });
+            this.inventarioService.lessInventory(inventarioName, data).subscribe(res => {
+              this.venta.deleteOne(this.facturas[index].id, idEmpresa).subscribe(res => {
+                Swal.close();
+                Swal.fire('Inventario eliminado', '', 'success');
+                this.facturas.splice(index, 1);
+              }, (err) => {
+                Swal.close();
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Se ha presentado un error inesperado'
+                });
+                console.log(err);
+              });
+            }, (err) => {
+              Swal.close();
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Vuelve a intentarlo'
+              });
+              console.log(err);
+            });
+          })
+        } else {
+          Swal.close();
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Se ha presentado un error inesperado'
+          });
+        }
+      }
+    })
   }
 }

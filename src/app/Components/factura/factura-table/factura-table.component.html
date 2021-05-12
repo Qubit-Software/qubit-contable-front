@@ -28,14 +28,19 @@
                                         <th data-priority="2">Fecha</th>
                                         <th data-priority="3">Metodo de pago</th>
                                         <th data-priority="4">Total</th>
+                                        <th id="tableCorner" class="poppinsMedium text-center">Qubit</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let factura of facturas" [attr.id]="factura.id">
+                                    <tr *ngFor="let factura of facturas ; let index=index" [attr.id]="factura.id">
                                         <td>{{factura.idFactura}}</td>
                                         <td>{{factura.fecha | date : 'dd/MM/y'}}</td>
                                         <td>{{factura.metodo}}</td>
                                         <td>{{factura.total | currency : '$': 'symbol':'1.0-0'}}</td>
+                                        <td class="d-flex justify-content-around qubitIcons">
+                                            <img (click)="deleteVenta(index)" style="cursor: pointer; margin-top: 2px;"
+                                                src="../../../assets/images/iconos/delete.svg" height="15px" alt="">
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
