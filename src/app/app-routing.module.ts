@@ -9,6 +9,7 @@ import { ReportComponent } from './Pages/report/report.component';
 import { InventoryComponent } from './Pages/inventory/inventory.component';
 import { SaldosComponent } from './Pages/saldos/saldos.component';
 import { AbonosComponent } from './Components/Balance/abonos/abonos.component';
+import { SaldoAbonoComponent } from './Components/Balance/saldo-abono/saldo-abono.component';
 
 const routes: Routes = [
   { path: '', component: LogginComponent },
@@ -22,6 +23,7 @@ const routes: Routes = [
       {
         path: 'saldos', component: SaldosComponent, children: [
           { path: 'abonos', component: AbonosComponent },
+          { path: 'abonar', component: SaldoAbonoComponent },
         ]
       }
     ]

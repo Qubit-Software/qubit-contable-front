@@ -563,7 +563,7 @@ export class FacturaProductoComponent implements OnInit {
     let data = new Array()
     order.forEach(element => {
       if ("id" in element || element['id'] != null) {
-        let newcantida = this.tempStock[element['id']] - element['cantidad'];
+        let newcantida = -element['cantidad'];
         let dataItem = {
           'id': element['id'],
           'newcantidad': newcantida

@@ -29,7 +29,8 @@
                         <td>{{i.tipo}}</td>
                         <td class="d-flex justify-content-around qubitIcons">
                             <button id="plusElement" class="btn-plus">
-                                <fa-icon [icon]="faPlus" (click)='addProduct(index)'></fa-icon>
+                                <fa-icon [icon]="faPlus" [routerLink]="['./abonar']"
+                                [state]="{'idSaldo':i.id }" (click)='openModal()'></fa-icon>
                             </button>
                             <button class="searchIcon">
                                 <fa-icon [icon]="faSearch" class="icon" [routerLink]="['./abonos']"
