@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <table>
+                <tr class="poppinsMedium">
+                    <th>Fecha</th>
+                    <th>Descripcion</th>
+                    <th>Total gasto</th>
+                    <th id="tableCorner" class="poppinsMedium text-center">Qubit</th>
+                </tr>
+                <tr class="poppinsLight"
+                    *ngFor="let i of gastos | paginate: {itemsPerPage: 13, currentPage:page}  ; let index = index">
+                    <td>{{i.fecha | date : 'dd/MM/y'}}</td>
+                    <td><input type="text" [className]="(index!=edit) ? 'inputTable' : 'inputEdit'"
+                            [(ngModel)]="i.descripcion" [attr.disabled]="(index!=edit) ? '' : null" /></td>
+                    <td><input type="text" [ngClass]="{
+                        'inputTable':index!=edit,
+                        'inputEdit':index==edit,
+                        'recibeInput':true}" [(ngModel)]="i.valor" [attr.disabled]="(index!=edit) ? '' : null" /></td>
+                    <td class="d-flex justify-content-around qubitIcons" *ngIf="index==0">
+                        <button (click)='CreateGasto(index)' class="btn-plus">
+                            <fa-icon [icon]="faPlus"></fa-icon>
+                        </button>
+                    </td>
+                    <td class="d-flex justify-content-around qubitIcons" *ngIf="index!=0">
+                        <img class="editIcons" src="../../../../assets/images/iconos/delete.svg"
+                            (click)="deleteGasto(index)" height="15px" alt="">
+                    </td>
+                </tr>
+            </table>
+            <pagination-controls (pageChange)="page = $event" responsive="true" previousLabel="" nextLabel=""
+                class="pagination mx-auto mt-4 poppinsLight"></pagination-controls>
+
+        </div>
+    </div>
+</div>

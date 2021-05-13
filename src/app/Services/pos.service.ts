@@ -68,7 +68,7 @@ export class PosService {
         })
       );
   }
-  posReport(nit, tel, direccion, ciudad, report, fecha, efectivo, tarjeta, otro, totalProp, total) {
+  posReport(nit, tel, direccion, ciudad, report, fecha, efectivo, tarjeta, otro, totalProp, total, gastos, totalGastos, totalDescontado) {
     const authData = {
       nit,
       tel,
@@ -80,7 +80,9 @@ export class PosService {
       tarjeta,
       otro,
       totalProp,
-      total
+      total,
+      gastos, totalGastos,
+      totalDescontado
     };
     return this.http.post(
       `${this.urlPos}/report`, authData).pipe(

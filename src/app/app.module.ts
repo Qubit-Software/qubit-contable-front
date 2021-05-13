@@ -33,6 +33,8 @@ import { ProfileInfoComponent } from './Components/user/profile-info/profile-inf
 import { SaldosComponent } from './Pages/saldos/saldos.component';
 import { SaldoAbonoComponent } from './Components/Balance/saldo-abono/saldo-abono.component';
 import { AbonosComponent } from './Components/Balance/abonos/abonos.component';
+import { GastosComponent } from './Pages/gastos/gastos.component';
+import { GastosTableComponent } from './Components/gastos/gastos-table/gastos-table.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,8 @@ import { AbonosComponent } from './Components/Balance/abonos/abonos.component';
     SaldosComponent,
     SaldoAbonoComponent,
     AbonosComponent,
+    GastosComponent,
+    GastosTableComponent,
 ],
   imports: [
     BrowserModule,
