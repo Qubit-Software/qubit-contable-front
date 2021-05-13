@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { VentasService } from 'src/app/Services/ventas.service';
 import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
 import { InventarioService } from 'src/app/Services/inventario.service';
+import { GastosService } from 'src/app/Services/gastos.service';
+import { GastosModel } from 'src/app/Models/Gastos';
 
 @Component({
   selector: 'app-factura-table',
@@ -24,20 +26,43 @@ export class FacturaTableComponent implements OnInit {
   otro = 0;
   iva = 0;
   total = 0;
+  gastos: GastosModel[] = new Array();
 
   constructor(private venta: VentasService, private sucursal: SucursalService, private pos: PosService, private helpers: HelperFunctionsService,
-    private inventarioService: InventarioService) { }
+    private inventarioService: InventarioService, private gastosServices: GastosService) { }
 
   ngOnInit(): void {
     this.currentDate.setHours(0, 0, 0, 0)
     if (this.sucursal.empresa == null) {
       this.sucursal.getSucursalInfo().subscribe(res => {
         this.getVentas();
+        this.getGastos();
       });
     } else {
       this.getVentas();
+      this.getGastos();
     }
 
+  }
+  getGastos() {
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Espere por favor'
+    });
+    Swal.showLoading();
+    let fecha = `${this.currentDate.getMonth() + 1}/${this.currentDate.getDate()}/${this.currentDate.getFullYear()}`;
+    this.gastosServices.getGastosByDate(this.sucursal.sucursal.id, this.sucursal.empresa.id, fecha).subscribe(res => {
+      this.gastos = res['gastos'];
+      Swal.close();
+    }, (err) => {
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Se ha presentado un error inesperado'
+      });
+    })
   }
   getVentas() {
     this.allFacturas = new Array();
@@ -74,9 +99,30 @@ export class FacturaTableComponent implements OnInit {
     });
     Swal.showLoading();
     let fecha = `${this.currentDate.getDate()}/${this.currentDate.getMonth() + 1}/${this.currentDate.getFullYear()}`;
+    let gasto: object[];
+    let totalGasto = 0;
+    let totalDescuento = 0;
+    if (this.period == 'Diario') {
+      gasto = new Array()
+      this.gastos.forEach(element => {
+        totalGasto = totalGasto + (+element.valor);
+        let gast = {
+          'descripcion': element.descripcion,
+          'valor': this.helpers.formatter.format(+element.valor)
+        }
+        gasto.push(gast);
+      });
+      totalDescuento = this.total - totalGasto
+    } else {
+      gasto = null;
+    }
+    if (gasto.length == 0) {
+      gasto = null;
+    }
     this.pos.posReport(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion,
       this.sucursal.sucursal.ciudad, this.period, fecha, this.helpers.formatter.format(this.efectivo),
-      this.helpers.formatter.format(this.tarjeta), this.helpers.formatter.format(this.otro), this.helpers.formatter.format(this.iva), this.helpers.formatter.format(this.total)).subscribe(res => {
+      this.helpers.formatter.format(this.tarjeta), this.helpers.formatter.format(this.otro), this.helpers.formatter.format(this.iva), this.helpers.formatter.format(this.total),
+      gasto, this.helpers.formatter.format(totalGasto), this.helpers.formatter.format(totalDescuento)).subscribe(res => {
         Swal.close();
         Swal.fire('Ticket impreso',
           'El ticket se ha dispensado con exito',
@@ -107,7 +153,6 @@ export class FacturaTableComponent implements OnInit {
     this.efectivo = 0;
     this.otro = 0;
     this.tarjeta = 0;
-    console.log(this.allFacturas);
     let items = this.allFacturas.filter(item => item.fecha.getTime() === this.currentDate.getTime());
     this.facturas = items;
     this.facturas.forEach(fatura => {
@@ -153,7 +198,7 @@ export class FacturaTableComponent implements OnInit {
   }
   deleteVenta(index) {
     Swal.fire({
-      title: '¿Desea eliminar el inventario?',
+      title: '¿Desea eliminar el factura?',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: `Eliminar`,
@@ -180,7 +225,7 @@ export class FacturaTableComponent implements OnInit {
             this.inventarioService.lessInventory(inventarioName, data).subscribe(res => {
               this.venta.deleteOne(this.facturas[index].id, idEmpresa).subscribe(res => {
                 Swal.close();
-                Swal.fire('Inventario eliminado', '', 'success');
+                Swal.fire('Factura eliminado', '', 'success');
                 this.facturas.splice(index, 1);
               }, (err) => {
                 Swal.close();

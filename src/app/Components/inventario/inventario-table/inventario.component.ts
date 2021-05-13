@@ -160,7 +160,6 @@ export class InventarioComponent implements OnInit {
       this.edit = index;
     } else {
       this.createForm(this.inventario[index]);
-      console.log(this.form);
       if (this.form.invalid) {
         Swal.fire({
           icon: 'error',
@@ -324,26 +323,26 @@ export class InventarioComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         if (this.helpers.validateIdEmpresa()) {
-        let inventarioName = localStorage.getItem('inventario');
-        Swal.fire({
-          allowOutsideClick: false,
-          icon: 'info',
-          text: 'Espere por favor'
-        });
-        Swal.showLoading();
-        this.inventarioService.deleteOne(inventarioName, this.inventario[index].id).subscribe(res => {
-          Swal.close();
-          Swal.fire('Inventario eliminado', '', 'success');
-          this.inventario.splice(index, 1);
-        }, (err) => {
-          Swal.close();
+          let inventarioName = localStorage.getItem('inventario');
           Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Se ha presentado un error inesperado'
+            allowOutsideClick: false,
+            icon: 'info',
+            text: 'Espere por favor'
           });
-          console.log(err);
-        });
+          Swal.showLoading();
+          this.inventarioService.deleteOne(inventarioName, this.inventario[index].id).subscribe(res => {
+            Swal.close();
+            Swal.fire('Inventario eliminado', '', 'success');
+            this.inventario.splice(index, 1);
+          }, (err) => {
+            Swal.close();
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Se ha presentado un error inesperado'
+            });
+            console.log(err);
+          });
         } else {
           Swal.close();
           Swal.fire({
