@@ -5,6 +5,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import * as jQuery from 'jquery';
 import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-inventario',
@@ -116,6 +117,13 @@ export class InventarioComponent implements OnInit {
     columnsKeys.forEach(element => {
       this.newInventario[`${element}`] = '';
     });
+  }
+  getNumber(text) {
+    if (typeof text != 'number') {
+      return +(text.replace("$", "").replace(".", "").replace("$", "").replace(",", ""));
+    } else {
+      return text;
+    }
   }
   getInventario() {
     if (this.helpers.validateIdEmpresa()) {
@@ -235,7 +243,9 @@ export class InventarioComponent implements OnInit {
       }
     }
   }
-  updateConsumidor(index) {
+  updateInventario(id) {
+    let index = this.inventario.findIndex(element => element['id'] == id);
+    console.log(index);
     this.createForm(this.inventario[index]);
     if (this.form.invalid) {
       Swal.fire({
@@ -273,7 +283,7 @@ export class InventarioComponent implements OnInit {
             text: 'Espere por favor'
           });
           Swal.showLoading();
-          this.inventario[index]['precio'] = +(this.inventario[index]['precio'].replace("$", "").replace(".", "").replace("$", "").replace(",", ""));
+          this.inventario[index]['precio'] = this.getNumber(this.inventario[index]['precio']);
           this.inventarioService.updateInventario(this.inventario[index]['id'], this.columnsKey, inventarioName, this.inventario[index]).subscribe(res => {
             Swal.close();
             Swal.fire('Inventario actualizado', '', 'success');
@@ -314,7 +324,7 @@ export class InventarioComponent implements OnInit {
       this.form.addControl(key, new FormControl(inventario[key], Validators.required));
     });
   }
-  deleteConsumidor(index) {
+  deleteInventario(id) {
     Swal.fire({
       title: '¿Desea eliminar el inventario?',
       icon: 'warning',
@@ -330,10 +340,12 @@ export class InventarioComponent implements OnInit {
             text: 'Espere por favor'
           });
           Swal.showLoading();
-          this.inventarioService.deleteOne(inventarioName, this.inventario[index].id).subscribe(res => {
+          this.inventarioService.deleteOne(inventarioName, id).subscribe(res => {
             Swal.close();
             Swal.fire('Inventario eliminado', '', 'success');
+            let index = this.inventario.findIndex(element => element['id'] == id);
             this.inventario.splice(index, 1);
+            this.searchText = '';
           }, (err) => {
             Swal.close();
             Swal.fire({
