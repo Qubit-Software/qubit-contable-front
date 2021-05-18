@@ -35,8 +35,8 @@
           </td>
           <td class="d-flex justify-content-around qubitIcons" *ngIf="index!=0">
             <img class="editIcons" [src]="(index!=edit)? editIcon : checkIcon"
-              (click)="(index!=edit)? disabledEdit(index) : updateConsumidor(index)" height="15px" alt="">
-            <img class="editIcons" src="../../../../assets/images/iconos/delete.svg" (click)="deleteConsumidor(index)"
+              (click)="(index!=edit)? disabledEdit(index) : updateInventario(i['id'])" height="15px" alt="">
+            <img class="editIcons" src="../../../../assets/images/iconos/delete.svg" (click)="deleteInventario(i['id'])"
               height="15px" alt="">
           </td>
         </tr>
