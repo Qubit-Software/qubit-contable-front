@@ -28,12 +28,12 @@
                 'inputEdit':index==edit,
                 'recibeInput':col === 'precio'}" [(ngModel)]="i[col]" [attr.disabled]="(index!=edit) ? '' : null" />
           </th>
-          <td class="d-flex justify-content-around qubitIcons" *ngIf="index==0">
+          <td class="d-flex justify-content-around qubitIcons" *ngIf="i['id']==null">
             <button (click)='CreateInventario(index)' class="btn-plus">
               <fa-icon [icon]="faPlus"></fa-icon>
             </button>
           </td>
-          <td class="d-flex justify-content-around qubitIcons" *ngIf="index!=0">
+          <td class="d-flex justify-content-around qubitIcons" *ngIf="i['id']!=null">
             <img class="editIcons" [src]="(index!=edit)? editIcon : checkIcon"
               (click)="(index!=edit)? disabledEdit(index) : updateInventario(i['id'])" height="15px" alt="">
             <img class="editIcons" src="../../../../assets/images/iconos/delete.svg" (click)="deleteInventario(i['id'])"
