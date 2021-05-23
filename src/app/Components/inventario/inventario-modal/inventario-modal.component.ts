@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
 import { InventarioService } from 'src/app/Services/inventario.service';
 import { OrderService } from 'src/app/Services/order.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-inventario-modal',
@@ -19,7 +21,7 @@ export class InventarioModalComponent implements OnInit {
   searchText: string;
   searchHeader: object[] = new Array();
 
-  constructor(private inventarioService: InventarioService, private order: OrderService) {
+  constructor(private inventarioService: InventarioService, private order: OrderService,private helpers: HelperFunctionsService) {
     order.inventarioItems$.subscribe((newObject: object) => {
       this.inventario = newObject['items'];
     });
@@ -33,24 +35,35 @@ export class InventarioModalComponent implements OnInit {
   }
   getHeaders() {
     if (this.orderHeaders == null) {
-      this.inventarioService.getHeadersInventario(1).subscribe((res: any[]) => {
-        let responseHeaders = res['headers']['headers']
-        this.orderHeaders = Object.keys(responseHeaders).sort().reduce(
-          (obj, key) => {
-            obj[key] = responseHeaders[key];
-            return obj;
-          },
-          {}
-        );
-        let newValue = {
-          'headers': this.orderHeaders,
-          'headerPos': res['headers']['headerPos']
-        }
-        this.inventarioService.getHeaders(newValue);
-        this.getColumns();
-      }, err => {
-        console.log(err);
-      })
+      if (this.helpers.validateIdEmpresa()) {
+        let idSucursal = localStorage.getItem('sucursalId');
+        this.inventarioService.getHeadersInventario(idSucursal).subscribe((res: any[]) => {
+          let responseHeaders = res['headers']['headers']
+          this.orderHeaders = Object.keys(responseHeaders).sort().reduce(
+            (obj, key) => {
+              obj[key] = responseHeaders[key];
+              return obj;
+            },
+            {}
+          );
+          let newValue = {
+            'headers': this.orderHeaders,
+            'headerPos': res['headers']['headerPos']
+          }
+          this.inventarioService.getHeaders(newValue);
+          this.getColumns();
+        }, err => {
+          console.log(err);
+        })
+      } else {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Se ha presentado un error inesperado'
+        });
+        return null
+      }
     } else {
       this.getColumns();
     }
