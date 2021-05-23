@@ -70,27 +70,39 @@ export class InventarioComponent implements OnInit {
   }
   getHeaders() {
     if (this.orderHeaders == null) {
-      this.inventarioService.getHeadersInventario(1).subscribe((res: any[]) => {
-        let responseHeaders = res['headers']['headers']
-        this.orderHeaders = Object.keys(responseHeaders).sort().reduce(
-          (obj, key) => {
-            obj[key] = responseHeaders[key];
-            return obj;
-          },
-          {}
-        );
-        let newValue = {
-          'headers': this.orderHeaders,
-          'headerPos': res['headers']['headerPos']
-        }
-        this.inventarioService.getHeaders(newValue);
-        this.getColumns();
-      }, err => {
-        console.log(err);
-      })
+      if (this.helpers.validateIdEmpresa()) {
+        let idSucursal = localStorage.getItem('sucursalId');
+        this.inventarioService.getHeadersInventario(idSucursal).subscribe((res: any[]) => {
+          let responseHeaders = res['headers']['headers']
+          this.orderHeaders = Object.keys(responseHeaders).sort().reduce(
+            (obj, key) => {
+              obj[key] = responseHeaders[key];
+              return obj;
+            },
+            {}
+          );
+          let newValue = {
+            'headers': this.orderHeaders,
+            'headerPos': res['headers']['headerPos']
+          }
+          this.inventarioService.getHeaders(newValue);
+          this.getColumns();
+        }, err => {
+          console.log(err);
+        })
+      } else {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Se ha presentado un error inesperado'
+        });
+        return null
+      }
     } else {
       this.getColumns();
     }
+
   }
   async getColumns() {
     this.columns = Object.keys(this.orderHeaders).map(key => this.orderHeaders[key]);
