@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
 import { FilterPipe } from 'src/app/Pipes/filter.pipe';
 import { ConsumidorService } from 'src/app/Services/consumidor.service';
 import Swal from 'sweetalert2';
@@ -22,7 +23,7 @@ export class ClientTableComponent implements OnInit {
   edit: number = -1;
   editIcon = '../../../../assets/images/iconos/edit-button.png';
   checkIcon = '../../../../assets/images/iconos/checked.png';
-  constructor(private consumidorService: ConsumidorService, private fb: FormBuilder) { }
+  constructor(private consumidorService: ConsumidorService, private fb: FormBuilder, private helpers: HelperFunctionsService) { }
 
   ngOnInit(): void {
     this.getConsumidores();
@@ -35,15 +36,26 @@ export class ClientTableComponent implements OnInit {
       text: 'Espere por favor'
     });
     Swal.showLoading();
-    this.consumidorService.getAll(1).subscribe(res => {
-      this.consumidores = res['consumidores'];
+    if (this.helpers.validateIdEmpresa()) {
+      let idEmpresa = localStorage.getItem('empresaId');
+      this.consumidorService.getAll(1).subscribe(res => {
+        this.consumidores = res['consumidores'];
+        Swal.close();
+      }, (err) => {
+        this.consumidores = new Array();
+        Swal.close();
+        console.log(err);
+      });
+    } else {
       Swal.close();
-    }, (err) => {
-      this.consumidores = new Array();
-      Swal.close();
-      console.log(err);
-    });
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Se ha presentado un error inesperado'
+      });
+    }
   }
+
 
   disabledEdit(index) {
     this.edit = index;
