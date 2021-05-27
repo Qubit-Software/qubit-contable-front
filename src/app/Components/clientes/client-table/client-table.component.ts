@@ -38,7 +38,7 @@ export class ClientTableComponent implements OnInit {
     Swal.showLoading();
     if (this.helpers.validateIdEmpresa()) {
       let idEmpresa = localStorage.getItem('empresaId');
-      this.consumidorService.getAll(1).subscribe(res => {
+      this.consumidorService.getAll(idEmpresa).subscribe(res => {
         this.consumidores = res['consumidores'];
         Swal.close();
       }, (err) => {
