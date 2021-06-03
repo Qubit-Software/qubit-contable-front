@@ -130,6 +130,9 @@ export class InventarioComponent implements OnInit {
       this.newInventario[`${element}`] = '';
     });
   }
+  sortBy(colName: string) {
+    this.inventario.sort((a, b) => a[colName] > b[colName] ? 1 : a[colName] < b[colName] ? -1 : 0);
+  }
   getNumber(text) {
     if (typeof text != 'number') {
       return +(text.replace("$", "").replace(".", "").replace("$", "").replace(",", ""));
@@ -148,6 +151,7 @@ export class InventarioComponent implements OnInit {
       Swal.showLoading();
       this.inventarioService.getAllInventario(inventarioName).subscribe((res: any[]) => {
         this.inventario = res['inventario'];
+        this.sortBy(this.columnsKey[2]);
         this.inventarioService.chargeInventario(this.inventario);
         this.inventario.unshift(this.newInventario);
         Swal.close();

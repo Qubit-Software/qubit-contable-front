@@ -22,7 +22,7 @@
           <th id="tableCorner" class="poppinsMedium text-center">Qubit</th>
         </tr>
         <tr class="poppinsLight"
-          *ngFor="let i of inventario | filter:searchText:((searchHeader[0]==null)?'':searchHeader[0]['id']) | paginate: {itemsPerPage: 13, currentPage:page}  ; let index = index">
+          *ngFor="let i of inventario | filter:searchText:((searchHeader[0]==null)?'':searchHeader[0]['id']) | paginate: {itemsPerPage: 13, currentPage:page} ; let index = index">
           <th *ngFor="let col of columnsKey"><input type="text" [ngClass]="{
                 'inputTable':index!=edit,
                 'inputEdit':index==edit,
