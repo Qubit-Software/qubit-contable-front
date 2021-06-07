@@ -17,7 +17,7 @@ import { SaldosApartadosService } from 'src/app/Services/saldos-apartados.servic
   styleUrls: ['./factura-producto.component.css']
 })
 export class FacturaProductoComponent implements OnInit {
-  @Input() typeFacturacion: string;
+  @Input() typeFacturacion: string = '';
 
   //Porcentaje del iva
   ivaPercent = 0.19;
@@ -28,6 +28,8 @@ export class FacturaProductoComponent implements OnInit {
   inventario;
   inventarioItemsSearch;
   seleccionado: string;
+  seleccionado2: string;
+  methodSecond: boolean = false;
   faPlus = faPlus;
   faSearch = faSearch;
   productsCompra = new Array();
@@ -47,6 +49,8 @@ export class FacturaProductoComponent implements OnInit {
   total: number = 0;
   saldo: number = 0;
   abono: number = 0;
+  pago1: number = 0;
+  pago2: number = 0;
 
   headerPos: string = '';
 
@@ -598,4 +602,13 @@ export class FacturaProductoComponent implements OnInit {
     }
   }
 
+  getType() {
+    if (this.typeFacturacion != null) {
+      if (this.typeFacturacion.includes('Factura')) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 }

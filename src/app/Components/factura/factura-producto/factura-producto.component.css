@@ -219,6 +219,11 @@ display: none;
 .ContainerTableFactura:last-child , #trTotalVenta td:first-child { border-bottom-left-radius: 8px; }
 .ContainerTableFactura:last-child , #trTotalVenta td:last-child { border-bottom-right-radius: 8px; }
 
+.serviceCheck{
+  position: absolute;
+  left: -5px;
+  margin-top: 7px;
+}
 @media (min-width: 576px){
   .modal-dialog {
     width: 95%;

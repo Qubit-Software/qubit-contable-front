@@ -60,9 +60,25 @@
               <select class="form__field" [(ngModel)]="seleccionado">
                 <option value="Efectivo" selected>Efectivo</option>
                 <option value="Tarjeta">Tarjeta</option>
+                <option value="Entidad">Entidad</option>
                 <option value="Otro">Otro</option>
               </select>
             </div>
+          </div>
+          <div class="col-md-4">
+            <h4>Forma de pago</h4>
+            <div class="selectdiv">
+              <select class="form__field" [(ngModel)]="seleccionado2" [disabled]="!methodSecond">
+                <option value="Efectivo" selected>Efectivo</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="Entidad">Entidad</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <input id="method" type="checkbox" class="serviceCheck" (change)="methodSecond = $event.target.checked">
+          <label for="method" class="poppinsLight" style="font-size: 14px;">Segunda forma de pago</label>
           </div>
         </div>
         <div class="row">
@@ -114,13 +130,21 @@
               <td>IVA:</td>
               <td>{{iva | currency : '$': 'symbol':'1.0-0'}}</td>
             </tr>
-            <tr *ngIf="typeFacturacion!='Facturacion'">
+            <tr *ngIf="!getType()">
               <td>Abono:</td>
               <td><input type="text" class="recibeInput" [(ngModel)]="abono" (ngModelChange)="calculaValores()"></td>
             </tr>
+            <tr *ngIf="methodSecond">
+              <td>Pago 1:</td>
+              <td><input type="text" class="recibeInput" [(ngModel)]="pago1" (ngModelChange)="calculaValores()"></td>
+            </tr>
+            <tr *ngIf="methodSecond">
+              <td>Pago 2:</td>
+              <td><input type="text" class="recibeInput" [(ngModel)]="pago2" (ngModelChange)="calculaValores()"></td>
+            </tr>
           </tbody>
         </table>
-        <table class="tableBottom" *ngIf="typeFacturacion=='Facturacion'">
+        <table class="tableBottom" *ngIf="getType()">
           <tbody class="tableBottom">
             <tr class="ContainerTableFactura">
               <td>Valor Total:</td>
@@ -128,7 +152,7 @@
             </tr>
           </tbody>
         </table>
-        <table class="tableBottom" *ngIf="typeFacturacion!='Facturacion'">
+        <table class="tableBottom" *ngIf="!getType()">
           <tbody class="tableBottom">
             <tr class="ContainerTableFactura">
               <td>Saldo:</td>
