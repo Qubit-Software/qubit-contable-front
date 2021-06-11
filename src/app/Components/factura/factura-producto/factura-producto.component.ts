@@ -256,7 +256,7 @@ export class FacturaProductoComponent implements OnInit {
   calculaCambio() {
     let numberRecibe: number;
     numberRecibe = this.getNumber(this.recibeInput);
-    if (this.typeFacturacion == 'Facturacion') {
+    if (this.getType()) {
       this.cambioCalcule = numberRecibe - this.total;
     } else {
       this.cambioCalcule = numberRecibe - this.getNumber(this.abono);
@@ -396,14 +396,14 @@ export class FacturaProductoComponent implements OnInit {
     }
     if (this.sucursal.empresa == null) {
       this.sucursal.getSucursalInfo().subscribe(res => {
-        if (this.typeFacturacion == 'Facturacion') {
+        if (this.getType()) {
           this.payOrder();
         } else {
           this.payApartado();
         }
       });
     } else {
-      if (this.typeFacturacion == 'Facturacion') {
+      if (this.getType()) {
         this.payOrder();
       } else {
         this.payApartado();
