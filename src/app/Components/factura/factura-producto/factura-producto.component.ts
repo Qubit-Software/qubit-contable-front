@@ -67,7 +67,7 @@ export class FacturaProductoComponent implements OnInit {
         if (validate) {
           this.tempStock[newObject['selectItem']['id']] = newObject['selectItem']['cantidad'];
           let index = this.productsCompra.length - 1;
-          this.productsCompra[index] = JSON.parse(JSON.stringify(newObject['selectItem']));
+          this.productsCompra[index] = JSON.parse(JSON.stringify(newObject['selectItem'][0]));
           this.productsCompra[index]['cantidad'] = 1;
           this.edit = index;
           this.calculaVal(index);

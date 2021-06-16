@@ -91,10 +91,10 @@ export class InventarioModalComponent implements OnInit {
   change(i: number) {
     [this.searchHeader[0], this.searchHeader[i]] = [this.searchHeader[i], this.searchHeader[0]];
   }
-  addInventario(index) {
+  addInventario(id) {
     let object = {
       'items': this.inventario,
-      'selectItem': this.inventario[index]
+      'selectItem': this.inventario.filter(item => item['id'] == id)
     }
     this.searchText = '';
     this.order.chargeItemsInventario(object);
