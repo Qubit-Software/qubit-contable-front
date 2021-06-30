@@ -27,9 +27,11 @@ export class FacturaTableComponent implements OnInit {
   iva = 0;
   total = 0;
   gastos: GastosModel[] = new Array();
+  headerPos: string = '';
 
   constructor(private venta: VentasService, private sucursal: SucursalService, private pos: PosService, private helpers: HelperFunctionsService,
-    private inventarioService: InventarioService, private gastosServices: GastosService) { }
+    private inventarioService: InventarioService, private gastosServices: GastosService) {
+  }
 
   ngOnInit(): void {
     this.currentDate.setHours(0, 0, 0, 0)
@@ -42,7 +44,32 @@ export class FacturaTableComponent implements OnInit {
       this.getVentas();
       this.getGastos();
     }
-
+    this.getHeaders();
+  }
+  getHeaders() {
+    if (this.helpers.validateIdEmpresa()) {
+      let idSucursal = localStorage.getItem('sucursalId');
+      this.inventarioService.getHeadersInventario(idSucursal).subscribe((res: any[]) => {
+        this.headerPos = res['headers']['headerPos']
+      }, err => {
+        console.log(err);
+      })
+    } else {
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Se ha presentado un error inesperado'
+      });
+      return null
+    }
+  }
+  getNumber(text) {
+    if (typeof text != 'number') {
+      return +(text.replace("$", "").replace(".", "").replace("$", "").replace(",", ""));
+    } else {
+      return text;
+    }
   }
   getGastos() {
     Swal.fire({
@@ -256,5 +283,74 @@ export class FacturaTableComponent implements OnInit {
         }
       }
     })
+  }
+  printCopy(id) {
+    if (this.helpers.validateIdEmpresa()) {
+      let empresaId = localStorage.getItem('empresaId');
+      this.venta.getInfoVentasById(id, empresaId).subscribe((res) => {
+        Swal.fire({
+          allowOutsideClick: false,
+          icon: 'info',
+          text: 'Espere por favor'
+        });
+        Swal.showLoading();
+        let factura = res['venta'][0].factura;
+        const date = new Date(res['venta'][0].fecha);
+        let fecha = `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        let products: object[] = new Array();
+        res['inventario'].forEach(element => {
+          if ("id" in element || element['id'] != null) {
+            let splitHeaders = this.headerPos.split(',');
+            let tempNom = '';
+            splitHeaders.forEach(el => {
+              tempNom = tempNom + element[el] + ' ';
+              return tempNom
+            });
+            let prod = {
+              'nombre': tempNom,
+              'cantidad': String(element['cantidad']),
+              'precio': this.helpers.formatter.format((this.getNumber(element['precio'])) * element['cantidad'])
+            };
+            products.push(prod);
+          }
+        });
+        let iva = res['venta'][0].iva;
+        let total = res['venta'][0].preciototal;
+        let subtotal = total - iva;
+        let consumidor = res['consumidor']['nombre']
+        this.pos.posVenta(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion, this.sucursal.sucursal.ciudad,
+          factura, fecha, products, this.helpers.formatter.format(subtotal), this.helpers.formatter.format(iva), this.helpers.formatter.format(0), this.helpers.formatter.format(total),
+          this.helpers.formatter.format(0), this.helpers.formatter.format(0), factura, consumidor).subscribe(res => {
+            Swal.close();
+            Swal.fire('Ticket impreso',
+              'El ticket se ha dispensado con exito',
+              'success');
+          }, (err) => {
+            Swal.close();
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se encuentra la impresora conectada'
+            });
+            console.log(err);
+          });
+      }, (err) => {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Se ha presentado un error inesperado'
+        });
+        console.log(err);
+      });
+    } else {
+      Swal.close();
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Se ha presentado un error inesperado'
+      });
+      return null
+    }
   }
 }

@@ -57,6 +57,14 @@ export class VentasService {
         })
       );
   }
+  getInfoVentasById(id, idEmpresa) {
+    return this.http.get(
+      `${this.url}/getinfoventa/${id}/${idEmpresa}`).pipe(
+        map(resp => {
+          return resp;
+        })
+      );
+  }
   deleteOne(id, idEmpresa) {
     return this.http.delete(
       `${this.url}/deleteOne/${id}/${idEmpresa}`).pipe(
