@@ -29,13 +29,15 @@
                         <td>{{i.tipo}}</td>
                         <td class="d-flex justify-content-around qubitIcons">
                             <button id="plusElement" class="btn-plus">
-                                <fa-icon [icon]="faPlus" [routerLink]="['./abonar']"
-                                [state]="{'idSaldo':i.id }" (click)='openModal()'></fa-icon>
+                                <fa-icon [icon]="faPlus" [routerLink]="['./abonar']" [state]="{'idSaldo':i.id }"
+                                    (click)='openModal()'></fa-icon>
                             </button>
                             <button class="searchIcon">
                                 <fa-icon [icon]="faSearch" class="icon" [routerLink]="['./abonos']"
                                     [state]="{'idSaldo':i.id,'total':i.total }" (click)='openModal()'></fa-icon>
                             </button>
+                            <img (click)="printCopy(i.id)" style="cursor: pointer; margin-top: 2px;"
+                                src="../../../assets/images/iconos/printer.png" height="18px" alt="">
                         </td>
                     </tr>
                 </table>
