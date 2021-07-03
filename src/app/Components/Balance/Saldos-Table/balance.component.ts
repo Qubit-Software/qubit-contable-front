@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 export class BalanceComponent implements OnInit {
 
   ivaPercent = 0.19;
+  ivaPercent1 = 1.19;
 
   //*************************** testing only ***********************************
   faPlus = faPlus;
@@ -142,7 +143,7 @@ export class BalanceComponent implements OnInit {
           }
         });
         let total = res['saldo'].total;
-        let iva = total * this.ivaPercent;
+        let iva =(total/this.ivaPercent1) * this.ivaPercent
         let subtotal = total - iva;
         let consumidor = res['saldo']['consumidore'].nombre
         let tipo = res['saldo'].tipo;
