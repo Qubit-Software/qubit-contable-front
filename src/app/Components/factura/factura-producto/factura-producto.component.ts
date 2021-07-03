@@ -251,8 +251,8 @@ export class FacturaProductoComponent implements OnInit {
     let cantidad = this.productsCompra[index]['cantidad'];
     let precio = cantidad * this.getNumber(this.productsCompra[index]['precio']);
     let iva = (precio/this.ivaPercent1) * this.ivaPercent;
-    this.productsCompra[index]['iva'] = this.transformNumber(iva);
-    this.productsCompra[index]['pbase'] = this.transformNumber(precio - iva);
+    this.productsCompra[index]['iva'] = this.transformNumber(Math.round(iva));
+    this.productsCompra[index]['pbase'] = this.transformNumber(Math.round(precio - iva));
   }
   calculaCambio() {
     let numberRecibe: number;
@@ -276,6 +276,7 @@ export class FacturaProductoComponent implements OnInit {
           this.subtotal = this.subtotal + (this.getNumber(element['pbase']) * element['cantidad']);
           this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
           this.saldo = this.saldo + (this.getNumber(element['precio']) * element['cantidad']);
+          console.log(this.subtotal,this.iva)
         }
         else {
           element['cantidad'] = 1;
