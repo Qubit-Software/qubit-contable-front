@@ -73,6 +73,14 @@ export class SaldosApartadosService {
         })
       );
   }
+  getInfoSaldosById(id, idEmpresa) {
+    return this.http.get(
+      `${this.url}/getinfosaldo/${id}/${idEmpresa}`).pipe(
+        map(resp => {
+          return resp;
+        })
+      );
+  }
   deleteOne(id) {
     return this.http.delete(
       `${this.url}/delete/${id}`).pipe(

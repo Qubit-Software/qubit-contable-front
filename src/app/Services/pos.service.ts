@@ -61,6 +61,7 @@ export class PosService {
       cambio,
       cliente
     };
+    console.log(authData);
     return this.http.post(
       `${this.urlPos}/saldo`, authData).pipe(
         map(resp => {
