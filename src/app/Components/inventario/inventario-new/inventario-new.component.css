@@ -1,0 +1,304 @@
+h4 {
+    font-size: 13px;
+    font-weight: 900;
+    color: #343E7D;
+    font-family: Poppins-Medium;
+  }
+  .card{
+    padding: 2rem 1rem 2rem 1rem;
+  }
+  .form__field {
+    font-family: Poppins-Light;
+    width: 90%;
+    border: 0;
+    border-bottom: 1px solid#DAE0F6;
+    outline: 0;
+    font-size: 0.8rem;
+    color: #4D5DB7;
+    padding: 0px 10px 0px;
+    background: transparent;
+    transition: border-color 0.2s;
+    margin-bottom: 4vh;
+  }
+  .form__field:focus{
+    transition: 0.09s;
+    border-bottom: 3px solid#343E7D;
+    border-width: 3px;
+    border-image-slice: 1;
+    box-shadow: none;
+  }
+  .tableBottom{
+    background-color: white;
+  }
+  .tableBottom td {
+    border-collapse: separate;
+    border-spacing: 0;
+    color: #343E7D;
+    border: hidden;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: Poppins-Light;
+    background-color: white;
+  }
+  .tableBottom:first-child td:last-child{text-align: right}
+  .ContainerTableFactura td{
+    color: white;
+    font-family: Poppins-Light;
+    background-color: #343E7D;
+  }
+  .tableCambio{
+    background-color: white;
+  }
+  .tableCambio td {
+    border-collapse: separate;
+    border-spacing: 0;
+    color: #343E7D;
+    border: hidden;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: Poppins-Light;
+    background-color: white;
+  }
+  .recibeInput{
+    background-color: transparent;
+    border: none;
+    width: 80%;
+    color: #343E7D;
+    font-size: 15px;
+    font-family: Poppins-Light;
+    text-align: right;
+  }
+  .recibeInput:focus{
+    border:none;
+    outline: none;
+  }
+  
+  #trTotalVenta{
+    background-color: #CBD2EC;
+    border-radius: 12px;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+  }
+  
+  #trTotalVenta td{
+    background-color: #CBD2EC;
+    width: 50%;
+  }
+  .ContainerTableFactura:first-child, #trTotalVenta td:first-child { border-top-left-radius: 8px; }
+  .ContainerTableFactura:first-child, #trTotalVenta td:last-child { border-top-right-radius: 8px; text-align: right;}
+  .ContainerTableFactura:last-child , #trTotalVenta td:first-child { border-bottom-left-radius: 8px; }
+  .ContainerTableFactura:last-child , #trTotalVenta td:last-child { border-bottom-right-radius: 8px; }
+  
+  
+  .ContainerTableFactura:first-child td:first-child { border-top-left-radius: 8px; }
+  .ContainerTableFactura:first-child td:last-child { border-top-right-radius: 8px; text-align: right;}
+  .ContainerTableFactura:last-child  td:first-child { border-bottom-left-radius: 8px; }
+  .ContainerTableFactura:last-child td:last-child { border-bottom-right-radius: 8px; }
+  
+  
+  
+  .Pagar {
+    font-size: 13px;
+    padding: 2px 10px 5px;
+    width: 12vh;
+    background-color: #343E7D;
+    border-radius: 6px;
+    color: white;
+    float: right;
+  }
+  
+  .Pagar:hover {
+    background-color: white;
+    color: #282f5a;
+    border: 1px solid #282f5a;
+  }
+  .Cancelar {
+    font-size: 13px;
+    padding: 2px 10px 5px;
+    width: 12vh;
+    background-color: #9299B9;
+    border-radius: 6px;
+    color: white;
+    float: left;
+  }
+  .selectdiv {
+    position: relative;
+    float: left;
+    width: 90%;
+  }
+  .selectdiv select option{
+    border: none;
+    border: 1px solid white;
+  }
+  /* IE11 hide native button (thanks Matt!) */
+  select::-ms-expand {
+  display: none;
+  }
+  
+  .selectdiv:after {
+    content: '>';
+    font: 14px "Consolas", monospace;
+    color: #343E7D;
+    transform: rotate(90deg);
+    right: 11px;
+    top: 2px;
+    padding: 0 0 2px;
+    position: absolute;
+    pointer-events: none;
+  }
+  
+  .selectdiv select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Add some styling */
+    display: block;
+    background-color: white;
+    background-image: none;
+    border: 1px solid white;
+    border-bottom: 1px solid#DAE0F6;
+    -ms-word-break: normal;
+    word-break: normal;
+  }
+  
+  .Cancelar:hover {
+    background-color: white;
+    color: #282f5a;
+    border: 1px solid #282f5a;
+  }
+  #plusElement{
+    padding: 0px 5px;
+  }
+  #plusElement:hover {
+    background-color: #21274d;
+    color: white;
+  }
+  .searchIcon{
+    background-color: transparent;
+    color: #282f5a;
+    border: none;
+    cursor: pointer;
+  }
+  .thNormal{
+    width: 7rem;
+  }
+  .btn-plus {
+    padding: 0px 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: #343E7D;
+    color: white;
+    border: #343E7D;
+  }
+  .inputTable{
+    font-family: Poppins-Light;
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+    width: 95%;
+    color: #4D5DB7;
+    text-align: left;
+    font-size: 12px;
+  }
+  .inputTable:focus{
+    outline: none;
+  }
+  .ContainerTableFactura:first-child, #trTotalVenta td:first-child { border-top-left-radius: 8px; }
+  .ContainerTableFactura:first-child, #trTotalVenta td:last-child { border-top-right-radius: 8px; text-align: right;}
+  .ContainerTableFactura:last-child , #trTotalVenta td:first-child { border-bottom-left-radius: 8px; }
+  .ContainerTableFactura:last-child , #trTotalVenta td:last-child { border-bottom-right-radius: 8px; }
+  
+  .serviceCheck{
+    position: absolute;
+    left: -5px;
+    margin-top: 7px;
+  }
+  @media (min-width: 576px){
+    .modal-dialog {
+      width: 95%;
+      max-width: 95%;
+    }
+  }
+  .modal-header{
+    padding: 5px;
+    border-bottom: hidden;
+  }
+  .modal-body{
+    padding: 0px;
+  }
+  .modal-content{
+    background-color:transparent;
+    border: none;
+  }
+  #menuModal .modal-body .close{
+    position: absolute;
+    right: 1rem;
+    z-index: 999;
+    padding: 1.5rem;
+  }
+  .editIcons {
+    cursor: pointer;
+    margin-right: 3px;
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 22px;
+    margin-left: 1rem;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ec5757;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #4D5DB7;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #4D5DB7;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }

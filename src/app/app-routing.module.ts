@@ -11,6 +11,8 @@ import { SaldosComponent } from './Pages/saldos/saldos.component';
 import { AbonosComponent } from './Components/Balance/abonos/abonos.component';
 import { SaldoAbonoComponent } from './Components/Balance/saldo-abono/saldo-abono.component';
 import { GastosComponent } from './Pages/gastos/gastos.component';
+import { InventarioNewComponent } from './Components/inventario/inventario-new/inventario-new.component';
+import { InventarioComponent } from './Components/inventario/inventario-table/inventario.component';
 
 const routes: Routes = [
   { path: '', component: LogginComponent },
@@ -20,7 +22,12 @@ const routes: Routes = [
       { path: 'clients', component: ClientsComponent },
       { path: 'facturas', component: FacturasComponent },
       { path: 'reports', component: ReportComponent },
-      { path: 'inventario', component: InventoryComponent },
+      {
+        path: 'inventario', component: InventoryComponent, children: [
+          { path: '', component: InventarioComponent },
+          { path: 'update', component: InventarioNewComponent }
+        ]
+      },
       {
         path: 'saldos', component: SaldosComponent, children: [
           { path: 'abonos', component: AbonosComponent },

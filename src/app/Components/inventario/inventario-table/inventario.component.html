@@ -16,7 +16,11 @@
 <div class="row">
   <div class="col">
     <div class="card">
-      <table>
+      <div class="col-md-12 text-right">
+        <a routerLink="./update"><img class="settingsImg" src="../../../../assets/images/iconos/settings.png" alt=""
+            width="35" style="cursor: pointer;"></a>
+      </div>
+      <table class="mt-2">
         <tr class="poppinsMedium">
           <th *ngFor="let col of columns">{{col}}</th>
           <th id="tableCorner" class="poppinsMedium text-center">Qubit</th>
@@ -43,6 +47,7 @@
       </table>
       <pagination-controls (pageChange)="page = $event" responsive="true" previousLabel="" nextLabel=""
         class="pagination mx-auto mt-4 poppinsLight"></pagination-controls>
+        <button (click)="downloadFile()">Download</button>
     </div>
   </div>
 </div>

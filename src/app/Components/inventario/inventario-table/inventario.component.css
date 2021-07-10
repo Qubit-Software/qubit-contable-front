@@ -63,3 +63,12 @@
   background-color: #343E7D;
   border-color: #343E7D;
 }
+.excel-btn{
+  font-size: 13px;
+  padding: 2px 10px 5px;
+  width: 12vh;
+  background-color: #343E7D;
+  border-radius: 6px;
+  color: white;
+  float: right;
+}

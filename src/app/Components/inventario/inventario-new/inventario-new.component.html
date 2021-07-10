@@ -1,0 +1,75 @@
+<div class="card">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+                <h4>Productos</h4>
+            </div>
+            <div class="col-md-5 text-right">
+                <h4 style="display: inline-block;">Disminuir\Incrementar inventario</h4>
+                <label class="switch">
+                    <input type="checkbox" [(ngModel)]="type" [checked]="type">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <table>
+                    <tr class="poppinsMedium">
+                        <th *ngFor="let col of columns">{{col}}</th>
+                        <th id="tableCorner" class="poppinsMedium text-center">Qubit</th>
+                    </tr>
+                    <tr class="poppinsLight" *ngFor="let i of productsInventario; let index=index;">
+                        <td *ngFor="let col of columnsKey">
+                            <input attr.list="{{'id'+col}}" [(ngModel)]="i[col]" class="inputTable"
+                                *ngIf="col!='cantidad'" (change)="selectProduct($event,col)"
+                                [attr.disabled]="(col=='precio' || index!=(productsInventario.length-1)) ? '' : null">
+                            <input [(ngModel)]="i[col]" type="number" class="inputTable" *ngIf="col=='cantidad'"
+                                [attr.disabled]="(index!=edit) ? '' : null">
+                            <datalist id="{{'id'+col}}" *ngIf="col!='precio'">
+                                <option id="{{pindex}}"
+                                    *ngFor="let singProd of inventario| unique:col ;let pindex=index">
+                                    {{singProd[col]}}
+                                </option>
+                            </datalist>
+                        </td>
+                        <td class="d-flex justify-content-around qubitIcons"
+                            *ngIf="index==(productsInventario.length-1)">
+                            <button id="plusElement" class="btn-plus">
+                                <fa-icon [icon]="faPlus" (click)='addProduct(index)'></fa-icon>
+                            </button>
+                            <button class="searchIcon">
+                                <fa-icon [icon]="faSearch" class="icon" (click)='searchInventario()'></fa-icon>
+                            </button>
+                            <img (click)="clearProduct(index)" style="cursor: pointer; margin-top: 2px;"
+                                src="../../../assets/images/iconos/delete.svg" height="15px" alt="">
+                        </td>
+                        <td class="d-flex justify-content-around qubitIcons"
+                            *ngIf="index!=(productsInventario.length-1)">
+                            <img class="editIcons" [src]="(index!=edit)? editIcon : checkIcon"
+                                (click)="editCompra(index)" height="15px" alt="">
+                            <img class="editIcons" src="../../../../assets/images/iconos/delete.svg"
+                                (click)="deleteProduct(index)" height="15px" alt="">
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+            </div>
+            <div class="col-md-3">
+                <div class="containerButtoms">
+                    <button type="submit" class="btn mt-3 Cancelar" routerLink="../">Cancelar</button>
+                    <button type="submit" class="btn mt-3 Pagar" (click)="acept()">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="inventarioModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true"
+    role="dialog">
+    <app-inventario-modal></app-inventario-modal>
+</div>
+
+<div class="modal-backdrop fade show" id="backdrop" style="display: none;"></div>

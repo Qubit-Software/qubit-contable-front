@@ -35,6 +35,7 @@ import { SaldoAbonoComponent } from './Components/Balance/saldo-abono/saldo-abon
 import { AbonosComponent } from './Components/Balance/abonos/abonos.component';
 import { GastosComponent } from './Pages/gastos/gastos.component';
 import { GastosTableComponent } from './Components/gastos/gastos-table/gastos-table.component';
+import { InventarioNewComponent } from './Components/inventario/inventario-new/inventario-new.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { GastosTableComponent } from './Components/gastos/gastos-table/gastos-ta
     AbonosComponent,
     GastosComponent,
     GastosTableComponent,
+    InventarioNewComponent,
 ],
   imports: [
     BrowserModule,
