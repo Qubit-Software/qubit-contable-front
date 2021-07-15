@@ -3,3 +3,7 @@
     border: 2px solid #282f5a;
     outline:none;
   }
+.download{
+  right: 7rem;
+  position: absolute;
+}

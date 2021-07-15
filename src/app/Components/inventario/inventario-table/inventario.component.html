@@ -47,7 +47,10 @@
       </table>
       <pagination-controls (pageChange)="page = $event" responsive="true" previousLabel="" nextLabel=""
         class="pagination mx-auto mt-4 poppinsLight"></pagination-controls>
-        <button (click)="downloadFile()">Download</button>
+      <div class="btnContainer text-right">
+        <button class="btn mt-0 titles" (click)="downloadFile()">Descargar <fa-icon [icon]="faDownload"></fa-icon>
+          </button>
+      </div>
     </div>
   </div>
 </div>

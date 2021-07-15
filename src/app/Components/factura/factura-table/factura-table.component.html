@@ -40,7 +40,8 @@
                                         <td class="d-flex justify-content-around qubitIcons">
                                             <img (click)="deleteVenta(index)" style="cursor: pointer; margin-top: 2px;"
                                                 src="../../../assets/images/iconos/delete.svg" height="15px" alt="">
-                                            <img (click)="printCopy(factura.id)" style="cursor: pointer; margin-top: 2px;"
+                                            <img (click)="printCopy(factura.id)"
+                                                style="cursor: pointer; margin-top: 2px;"
                                                 src="../../../assets/images/iconos/printer.png" height="18px" alt="">
                                         </td>
                                     </tr>
@@ -55,6 +56,9 @@
                     <div class="btnContainer">
                         <button class="btn mt-0 titles" type="submit" (click)="print()">
                             Reporte
+                        </button>
+                        <button class="btn mt-0 titles download" (click)="downloadFile()">Descargar <fa-icon [icon]="faDownload">
+                            </fa-icon>
                         </button>
                     </div>
                 </div>
