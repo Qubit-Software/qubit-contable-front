@@ -8,6 +8,9 @@ import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service
 import { InventarioService } from 'src/app/Services/inventario.service';
 import { GastosService } from 'src/app/Services/gastos.service';
 import { GastosModel } from 'src/app/Models/Gastos';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
+import { ExportToCsv } from 'export-to-csv';
+import { ConsumidorModel } from 'src/app/Models/Consumidor';
 
 @Component({
   selector: 'app-factura-table',
@@ -20,6 +23,8 @@ export class FacturaTableComponent implements OnInit {
   period = 'Diario';
   allFacturas: FacturasModel[];
   facturas: FacturasModel[];
+  consumidor: ConsumidorModel[] = new Array()
+  faDownload = faDownload;
   currentDate = new Date();
   efectivo = 0;
   tarjeta = 0;
@@ -104,6 +109,11 @@ export class FacturaTableComponent implements OnInit {
         factura.metodo = element['tipo'];
         factura.iva = element['iva'];
         factura.total = element['preciototal'];
+        this.consumidor[factura.id] = new ConsumidorModel();
+        this.consumidor[factura.id].nombre = element['nombre'];
+        this.consumidor[factura.id].correo = element['correo'];
+        this.consumidor[factura.id].telefono = element['telefono'];
+        this.consumidor[factura.id].cedula = element['cedula'];
         this.allFacturas.push(factura);
       });
       this.day()
@@ -352,5 +362,47 @@ export class FacturaTableComponent implements OnInit {
       });
       return null
     }
+  }
+  downloadFile() {
+    const date = new Date();
+    let fecha = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    var data: Object[] = new Array();
+    this.facturas.forEach(factura => {
+      let fec = new Date(factura.fecha)
+      let fecha = `${fec.getDate()}-${fec.getMonth() + 1}-${fec.getFullYear()}`;
+      let obj = {
+        'Factura': factura.idFactura,
+        'Total venta': factura.total,
+        'Iva': factura.iva,
+        'Fecha': fecha,
+        'Cliente': this.consumidor[factura.id].nombre,
+        'Cedula': this.consumidor[factura.id].cedula,
+        'Telefono': this.consumidor[factura.id].telefono
+      }
+      data.push(obj);
+    })
+    if (data == null || data.length == 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No existen ventas para generar reporte'
+      });
+      return
+    }
+    const options = {
+      fieldSeparator: ';',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: true,
+      showTitle: false,
+      filename: `Reporte ${fecha}`,
+      useTextFile: false,
+      useBom: true,
+      useKeysAsHeaders: true
+    };
+    console.log(data);
+    const csvExporter = new ExportToCsv(options);
+
+    csvExporter.generateCsv(data);
   }
 }

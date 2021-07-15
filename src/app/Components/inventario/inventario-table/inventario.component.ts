@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { InventarioService } from 'src/app/Services/inventario.service';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faPlus } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import * as jQuery from 'jquery';
 import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
@@ -20,6 +20,7 @@ export class InventarioComponent implements OnInit {
   posAdd = false;
   form: FormGroup;
   faPlus = faPlus;
+  faDownload = faDownload;
   searchText: string;
   inventario;
   oldInventory = new Array();
@@ -385,45 +386,28 @@ export class InventarioComponent implements OnInit {
   }
 
   downloadFile() {
-    var data = [
-      {
-        name: 'Test 1',
-        age: 13,
-        average: 8.2,
-        approved: true,
-        description: "using 'Content here, content here' "
-      },
-      {
-        name: 'Test 2',
-        age: 11,
-        average: 8.2,
-        approved: true,
-        description: "using 'Content here, content here' "
-      },
-      {
-        name: 'Test 4',
-        age: 10,
-        average: 8.2,
-        approved: true,
-        description: "using 'Content here, content here' "
-      },
-    ];
-     
-      const options = { 
-        fieldSeparator: ';',
-        quoteStrings: '"',
-        decimalSeparator: '.',
-        showLabels: true, 
-        showTitle: true,
-        title: 'My Awesome CSV',
-        useTextFile: false,
-        useBom: true,
-        useKeysAsHeaders: true,
-        // headers: ['Column 1', 'Column 2', etc...] <-- Won't work with useKeysAsHeaders present!
-      };
-     
+    const date = new Date();
+    let fecha = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    var data: Object[] = new Array();
+    this.inventario.forEach(item => {
+      if ("id" in item || item['id'] != null) {
+        data.push(item);
+      }
+    });
+    const options = {
+      fieldSeparator: ';',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: true,
+      showTitle: false,
+      filename: `Inventario ${fecha}`,
+      useTextFile: false,
+      useBom: true,
+      useKeysAsHeaders: true
+    };
+    console.log(data);
     const csvExporter = new ExportToCsv(options);
-     
+
     csvExporter.generateCsv(data);
   }
 }

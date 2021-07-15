@@ -43,9 +43,9 @@ export class VentasService {
   getVentasBySucursal(idEmpresa) {
     let id = localStorage.getItem('sucursalId')
     return this.http.get(
-      `${this.url}/getVentas/${idEmpresa}/${id}`).pipe(
+      `${this.url}/getVentasReport/${idEmpresa}/${id}`).pipe(
         map(resp => {
-          return resp['venta'];
+          return resp['ventas'];
         })
       );
   }
