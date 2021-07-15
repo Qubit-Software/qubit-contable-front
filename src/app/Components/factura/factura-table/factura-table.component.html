@@ -38,7 +38,7 @@
                                         <td>{{factura.metodo}}</td>
                                         <td>{{factura.total | currency : '$': 'symbol':'1.0-0'}}</td>
                                         <td class="d-flex justify-content-around qubitIcons">
-                                            <img (click)="deleteVenta(index)" style="cursor: pointer; margin-top: 2px;"
+                                            <img (click)="deleteVenta(factura.id)" style="cursor: pointer; margin-top: 2px;"
                                                 src="../../../assets/images/iconos/delete.svg" height="15px" alt="">
                                             <img (click)="printCopy(factura.id)"
                                                 style="cursor: pointer; margin-top: 2px;"

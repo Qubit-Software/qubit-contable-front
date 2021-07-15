@@ -233,7 +233,7 @@ export class FacturaTableComponent implements OnInit {
     });
 
   }
-  deleteVenta(index) {
+  deleteVenta(id) {
     Swal.fire({
       title: '¿Desea eliminar el factura?',
       icon: 'warning',
@@ -250,7 +250,7 @@ export class FacturaTableComponent implements OnInit {
         if (this.helpers.validateIdEmpresa()) {
           let idEmpresa = localStorage.getItem('empresaId');
           let inventarioName = localStorage.getItem('inventario');
-          this.venta.getInventarioVentasByVentas(this.facturas[index].id, idEmpresa).subscribe(res => {
+          this.venta.getInventarioVentasByVentas(id, idEmpresa).subscribe(res => {
             let data = new Array()
             res['inventario'].forEach(element => {
               let dataItem = {
@@ -260,9 +260,10 @@ export class FacturaTableComponent implements OnInit {
               data.push(dataItem);
             });
             this.inventarioService.lessInventory(inventarioName, data).subscribe(res => {
-              this.venta.deleteOne(this.facturas[index].id, idEmpresa).subscribe(res => {
+              this.venta.deleteOne(id, idEmpresa).subscribe(res => {
                 Swal.close();
                 Swal.fire('Factura eliminado', '', 'success');
+                let index = this.facturas.findIndex(element => element['id'] == id);
                 this.facturas.splice(index, 1);
               }, (err) => {
                 Swal.close();
@@ -297,7 +298,9 @@ export class FacturaTableComponent implements OnInit {
   printCopy(id) {
     if (this.helpers.validateIdEmpresa()) {
       let empresaId = localStorage.getItem('empresaId');
+      console.log(id);
       this.venta.getInfoVentasById(id, empresaId).subscribe((res) => {
+        console.log(res);
         Swal.fire({
           allowOutsideClick: false,
           icon: 'info',
