@@ -10,6 +10,8 @@ import { VentasService } from 'src/app/Services/ventas.service';
 import { PosService } from 'src/app/Services/pos.service';
 import { HelperFunctionsService } from 'src/app/Helpers/helper-functions.service';
 import { SaldosApartadosService } from 'src/app/Services/saldos-apartados.service';
+import { OrderComponent } from '../../templates/order/order.component';
+import * as html2pdf from 'html2pdf.js';
 
 @Component({
   selector: 'app-factura-producto',
@@ -22,6 +24,8 @@ export class FacturaProductoComponent implements OnInit {
   //Porcentaje del iva
   ivaPercent = 0.19;
   ivaPercent1 = 1.19;
+
+  dataPrint: Object
 
   columns: string[] = new Array();
   columnsKey: string[] = new Array();
@@ -250,7 +254,7 @@ export class FacturaProductoComponent implements OnInit {
   calculaVal(index) {
     let cantidad = this.productsCompra[index]['cantidad'];
     let precio = cantidad * this.getNumber(this.productsCompra[index]['precio']);
-    let iva = (precio/this.ivaPercent1) * this.ivaPercent;
+    let iva = (precio / this.ivaPercent1) * this.ivaPercent;
     this.productsCompra[index]['iva'] = this.transformNumber(Math.round(iva));
     this.productsCompra[index]['pbase'] = this.transformNumber(Math.round(precio - iva));
   }
@@ -276,7 +280,6 @@ export class FacturaProductoComponent implements OnInit {
           this.subtotal = this.subtotal + (this.getNumber(element['pbase']) * element['cantidad']);
           this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
           this.saldo = this.saldo + (this.getNumber(element['precio']) * element['cantidad']);
-          console.log(this.subtotal,this.iva)
         }
         else {
           element['cantidad'] = 1;
@@ -398,17 +401,33 @@ export class FacturaProductoComponent implements OnInit {
     }
     if (this.sucursal.empresa == null) {
       this.sucursal.getSucursalInfo().subscribe(res => {
+        if (this.sucursal.sucursal.print) {
+          if (this.getType()) {
+            this.payOrder();
+          } else {
+            this.payApartado();
+          }
+        } else {
+          if (this.getType()) {
+            this.pdfOrder();
+          } else {
+
+          }
+        }
+      });
+    } else {
+      if (this.sucursal.sucursal.print) {
         if (this.getType()) {
           this.payOrder();
         } else {
           this.payApartado();
         }
-      });
-    } else {
-      if (this.getType()) {
-        this.payOrder();
-      } else {
-        this.payApartado();
+      }
+      else {
+        if (this.getType()) {
+          this.pdfOrder();
+        } else {
+        }
       }
     }
   }
@@ -612,5 +631,108 @@ export class FacturaProductoComponent implements OnInit {
         return false;
       }
     }
+  }
+  pdfOrder() {
+    Swal.fire({
+      allowOutsideClick: false,
+      icon: 'info',
+      text: 'Pdf Generated'
+    });
+    Swal.showLoading();
+    this.ventas.getFactura(this.sucursal.empresa.id, this.sucursal.sucursal.id).subscribe(res => {
+      let factura = res['factura'];
+      factura = factura + 1;
+      const date = new Date();
+      let fecha = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+      let fecha1 = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+      let productArray: object[] = new Array();
+      this.productsCompra.forEach(element => {
+        if ("id" in element || element['id'] != null) {
+          let products = {
+            "cantidad": element['cantidad'],
+            "inventarioId": element['id']
+          };
+          productArray.push(products);
+        }
+      });
+      let products: object[] = new Array();
+      this.productsCompra.forEach(element => {
+        if ("id" in element || element['id'] != null) {
+          let splitHeaders = this.headerPos.split(',');
+          let tempNom = '';
+          splitHeaders.forEach(el => {
+            tempNom = tempNom + element[el] + ' ';
+            return tempNom
+          });
+          let prod = {
+            'nombre': tempNom,
+            'cantidad': String(element['cantidad']),
+            'precio': this.helpers.formatter.format((this.getNumber(element['precio'])) * element['cantidad'])
+          };
+          products.push(prod);
+        }
+      });
+      let iva = this.getNumber(this.iva);
+      let descuento = this.getNumber(this.descuento);
+      let recibe = this.getNumber(this.recibeInput);
+      this.dataPrint = {
+        nombre: this.sucursal.empresa.nombre,
+        nit: this.sucursal.empresa.nit,
+        telefono: this.sucursal.empresa.telefono,
+        direccion: this.sucursal.sucursal.direccion,
+        ciudad: this.sucursal.sucursal.ciudad,
+        factura: factura,
+        fecha: fecha
+      }
+      const options = {
+        filename: 'myfile.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 5 },
+        jsPDF: { orientation: 'portrait' }
+      }
+      const context: Element = document.getElementById('htmlData');
+      html2pdf().from(context).set(options).save();
+      // this.pos.posVenta(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion, this.sucursal.sucursal.ciudad,
+      //   factura, fecha, products, this.helpers.formatter.format(this.subtotal), this.helpers.formatter.format(iva), this.helpers.formatter.format(descuento), this.helpers.formatter.format(this.total),
+      //   this.helpers.formatter.format(recibe), this.helpers.formatter.format(this.cambioCalcule), factura, this.consumidor.nombre).subscribe(res => {
+      // this.ventas.createVenta(this.sucursal.empresa.id, this.total, this.iva, fecha1, this.seleccionado, this.comentario, this.sucursal.sucursal.id,
+      //   this.consumidor.id, productArray).subscribe(res => {
+      //     document.getElementById("backdrop").style.display = "block"
+      //     document.getElementById("facturaModal").style.display = "block"
+      //     document.getElementById("facturaModal").className += "show"
+      //     let tempOrder = JSON.parse(JSON.stringify(this.productsCompra));
+      //     this.order.UpdateConsumidor(new ConsumidorModel());
+      //     this.productsCompra = new Array();
+      //     this.newitemCompra();
+      //     this.order.chargeItemsInventario(new Array())
+      //     this.recibeInput = '';
+      //     this.cambioCalcule = 0;
+      //     this.descuento = 0;
+      //     this.comentario = '';
+      //     this.calculaValores();
+      //     Swal.close();
+      //     Swal.fire('Ticket impreso',
+      //       'El ticket se ha dispensado con exito',
+      //       'success');
+      //     this.lessInventory(tempOrder);
+      //   }, (err) => {
+      //     Swal.close();
+      //     Swal.fire({
+      //       icon: 'error',
+      //       title: 'Error',
+      //       text: 'Vuelve a intentarlo'
+      //     });
+      //     console.log(err);
+      //   });
+      // }, (err) => {
+      //   Swal.close();
+      //   Swal.fire({
+      //     icon: 'error',
+      //     title: 'Error',
+      //     text: 'No se encuentra la impresora conectada'
+      //   });
+      //   console.log(err);
+      // });
+    })
   }
 }

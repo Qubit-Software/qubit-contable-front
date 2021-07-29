@@ -1,0 +1,110 @@
+<div class="col" id="htmlData">
+    <div class="col text-center">
+        <img src="../../../../assets/images/CompanyLogos/Catherine.png" width="200" class="img-fluid" alt="">
+    </div>
+    <div class="text-center">
+        <p class="poppinsMedium pLabel">{{data['nombre']}}</p>
+        <p class="poppinsMedium pLabel">NIT {{data['nit']}}</p>
+        <p class="poppinsMedium pLabel">IVA Regimen Comun</p>
+        <p class="poppinsMedium pLabel">{{data['telefono']}}</p>
+        <p class="poppinsMedium pLabel">{{data['direccion']}}</p>
+        <p class="poppinsMedium pLabel">{{data['ciudad']}}</p>
+        <hr style="border-top: 0px solid transparent;">
+        <table class="table" style="text-align: center; border: 2px solid transparent; border-collapse: initial;">
+            <tr class="poppinsMedium" style="border: transparent;">
+                <th scope="col" class="w-50" style="border: transparent;">Factura de venta {{data['factura']}}</th>
+                <th scope="col" class="w-50" style="border: transparent;">Fecha: {{data['fecha']}}</th>
+            </tr>
+        </table>
+        <table class="table" style="text-align: center; border: 2px solid transparent; border-collapse: initial;">
+            <tr class="poppinsMedium" style="border: transparent;">
+                <th scope="col" class="w-40" style="border: transparent;">Descripcion</th>
+                <th scope="col" class="w-20" style="border: transparent;">Cantidad</th>
+                <th scope="col" class="w-40" style="border: transparent;">Valor</th>
+            </tr>
+            <tr>
+                <td>BATA PATPRIMO 8</td>
+                <td>2</td>
+                <td>$30.000</td>
+            </tr>
+            <tr>
+                <td>BATA PATPRIMO 8</td>
+                <td>2</td>
+                <td>$30.000</td>
+            </tr>
+            <tr>
+                <td>BATA PATPRIMO 8</td>
+                <td>2</td>
+                <td>$30.000</td>
+            </tr>
+            <tr>
+                <td>BATA PATPRIMO 8</td>
+                <td>2</td>
+                <td>$30.000</td>
+            </tr>
+            <tr>
+                <td>BATA PATPRIMO 8</td>
+                <td>2</td>
+                <td>$30.000</td>
+            </tr>
+            <tr>
+                <td>BATA PATPRIMO 8</td>
+                <td>2</td>
+                <td>$30.000</td>
+            </tr>
+            <tr>
+                <td>BATA PATPRIMO 8</td>
+                <td>2</td>
+                <td>$30.000</td>
+            </tr>
+            <tr>
+                <td>BATA PATPRIMO 8</td>
+                <td>2</td>
+                <td>$30.000</td>
+            </tr>
+            <tr>
+                <td>BATA PATPRIMO 8</td>
+                <td>2</td>
+                <td>$30.000</td>
+            </tr>
+            <tr>
+                <td>BATA PATPRIMO 8</td>
+                <td>2</td>
+                <td>$30.000</td>
+            </tr>
+        </table>
+        <hr style="border-top: 1px solid rgb(0 0 0);">
+        <table class="table" style="text-align: center; border: 2px solid transparent; border-collapse: initial;">
+            <tr class="pBot">
+                <td class="poppinsMedium">Subtotal</td>
+                <td>$76.000</td>
+            </tr>
+            <tr class="pBot">
+                <td class="poppinsMedium">Iva</td>
+                <td>$76.000</td>
+            </tr>
+            <tr class="pBot">
+                <td class="poppinsMedium">Descuento</td>
+                <td>$76.000</td>
+            </tr>
+            <tr>
+                <td class="poppinsMedium">Total</td>
+                <td>$76.000</td>
+            </tr>
+            <hr style="border-top: 1px solid rgb(0 0 0);">
+
+            <tr class="pBot">
+                <td class="poppinsMedium">Efectivo</td>
+                <td>$76.000</td>
+            </tr>
+            <tr class="pBot">
+                <td class="poppinsMedium">Cambio</td>
+                <td>$76.000</td>
+            </tr>
+        </table>
+        <p class="poppinsLight pLabel" style="margin-bottom: 10rem;">Numeracion habilitada y/o autorizada por la DIAN
+            Modalidad: D.E. / P.O.S. Prefijo: FPZ del No. al 1.000
+            Resolucion 0042 del 05/05/2020</p>
+    </div>
+</div>
+<button type="button" class="btn btn-block" (click)="downloadPDF()">Descargar Ticket</button>

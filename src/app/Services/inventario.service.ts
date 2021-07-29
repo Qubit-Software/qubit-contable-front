@@ -67,7 +67,6 @@ export class InventarioService {
         ...data
       }
     };
-    console.log(authData);
     return this.http.put(
       `${this.url}/update/${inventario}`, authData).pipe(
         map(resp => {
@@ -79,7 +78,6 @@ export class InventarioService {
     const authData = {
       data
     };
-    console.log(authData);
     return this.http.put(
       `${this.url}/lessinventory/${inventario}`, authData).pipe(
         map(resp => {

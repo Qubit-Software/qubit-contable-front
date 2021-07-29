@@ -37,7 +37,6 @@ export class FacturaTableComponent implements OnInit {
   constructor(private venta: VentasService, private sucursal: SucursalService, private pos: PosService, private helpers: HelperFunctionsService,
     private inventarioService: InventarioService, private gastosServices: GastosService) {
   }
-
   ngOnInit(): void {
     this.currentDate.setHours(0, 0, 0, 0)
     if (this.sucursal.empresa == null) {
@@ -252,6 +251,7 @@ export class FacturaTableComponent implements OnInit {
           let inventarioName = localStorage.getItem('inventario');
           this.venta.getInventarioVentasByVentas(id, idEmpresa).subscribe(res => {
             let data = new Array()
+            console.log(res);
             res['inventario'].forEach(element => {
               let dataItem = {
                 'id': element['inventarioId'],

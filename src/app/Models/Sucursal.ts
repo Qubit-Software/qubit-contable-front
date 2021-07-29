@@ -6,5 +6,6 @@ export class SucursalModel {
     correo: string;
     inventario: string;
     logo: string;
+    print: boolean;
     empresaId: number
 }

@@ -78,7 +78,7 @@
           </div>
           <div class="col-md-4">
             <input id="method" type="checkbox" class="serviceCheck" (change)="methodSecond = $event.target.checked">
-          <label for="method" class="poppinsLight" style="font-size: 14px;">Segunda forma de pago</label>
+            <label for="method" class="poppinsLight" style="font-size: 14px;">Segunda forma de pago</label>
           </div>
         </div>
         <div class="row">
@@ -174,3 +174,14 @@
 </div>
 
 <div class="modal-backdrop fade show" id="backdrop" style="display: none;"></div>
+
+<div class="modal fade" id="facturaModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-body">
+        <app-order [data]="dataPrint"></app-order>
+      </div>
+    </div>
+  </div>
+</div>

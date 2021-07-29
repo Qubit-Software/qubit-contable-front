@@ -13,6 +13,7 @@ import { SaldoAbonoComponent } from './Components/Balance/saldo-abono/saldo-abon
 import { GastosComponent } from './Pages/gastos/gastos.component';
 import { InventarioNewComponent } from './Components/inventario/inventario-new/inventario-new.component';
 import { InventarioComponent } from './Components/inventario/inventario-table/inventario.component';
+import { OrderComponent } from './Components/templates/order/order.component';
 
 const routes: Routes = [
   { path: '', component: LogginComponent },
@@ -35,6 +36,7 @@ const routes: Routes = [
         ]
       },
       { path: 'gastos', component: GastosComponent },
+      { path: 'test', component: OrderComponent },
     ]
   },
 ];
