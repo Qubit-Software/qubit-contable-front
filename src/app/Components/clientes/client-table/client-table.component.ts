@@ -126,7 +126,7 @@ export class ClientTableComponent implements OnInit {
       ciudad: [consumidor.ciudad, [Validators.required]],
     });
   }
-  deleteConsumidor(index) {
+  deleteConsumidor(id) {
     Swal.fire({
       title: '¿Desea eliminar el cliente?',
       icon: 'warning',
@@ -140,9 +140,10 @@ export class ClientTableComponent implements OnInit {
           text: 'Espere por favor'
         });
         Swal.showLoading();
-        this.consumidorService.deleteOne(this.consumidores[index].id).subscribe(res => {
+        this.consumidorService.deleteOne(id).subscribe(res => {
           Swal.close();
           Swal.fire('Cliente eliminado', '', 'success');
+          let index = this.consumidores.findIndex(element => element['id'] == id);
           this.consumidores.splice(index, 1);
         }, (err) => {
           Swal.close();

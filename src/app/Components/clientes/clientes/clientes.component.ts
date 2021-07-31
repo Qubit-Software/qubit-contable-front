@@ -77,6 +77,7 @@ export class ClientesComponent implements OnInit {
     });
   }
   createCliente() {
+    console.log(this.form)
     if (this.form.invalid) {
       Swal.fire({
         icon: 'error',
