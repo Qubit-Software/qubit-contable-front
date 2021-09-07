@@ -551,13 +551,13 @@ export class FacturaProductoComponent implements OnInit {
         products.push(prod);
       }
     });
-    let iva = this.getNumber(this.iva);
+    let iva = 0;
     let descuento = this.getNumber(this.descuento);
     let recibe = this.getNumber(this.recibeInput);
     let abono = this.getNumber(this.abono);
     let saldo = this.getNumber(this.saldo)
     this.pos.posSaldo(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion, this.sucursal.sucursal.ciudad,
-      this.typeFacturacion, fecha, products, this.helpers.formatter.format(this.subtotal), this.helpers.formatter.format(iva), this.helpers.formatter.format(descuento), this.helpers.formatter.format(this.total),
+      this.typeFacturacion, fecha, products, this.helpers.formatter.format(0), this.helpers.formatter.format(iva), this.helpers.formatter.format(descuento), this.helpers.formatter.format(this.total),
       this.helpers.formatter.format(abono), this.helpers.formatter.format(saldo), this.helpers.formatter.format(recibe), this.helpers.formatter.format(this.cambioCalcule), this.consumidor.nombre).subscribe(res => {
         this.saldos.createSaldoApartado(this.sucursal.empresa.id, this.typeFacturacion, this.total, this.saldo, false, fecha1, this.comentario, this.sucursal.sucursal.id,
           this.consumidor.id, abono, this.seleccionado, productArray).subscribe(res => {

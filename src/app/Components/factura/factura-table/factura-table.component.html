@@ -6,16 +6,31 @@
                 <p>{{ currentDate | date : 'dd/MM/y' }} </p>
             </div>
             <div class="row" style="margin-bottom:20px;">
-                <div class="col-md-6" style="text-align: center; padding-left: 22%;">
+                <div class="col-md-5" style="text-align: center; padding-left: 22%;">
                     <button [ngClass]="{btnpressed: pressed === 1 } " (click)="change(1)" class="btn">
                         Diario
                     </button>
                 </div>
-                <div class="col-md-6" style="text-align: center; padding-right: 22%;">
+                <div class="col-md-2" style="text-align: center; padding-right: 22%;">
                     <button class="btn" [ngClass]="{btnpressed: pressed === 2 } " (click)="change(2)">
                         Mensual
                     </button>
                 </div>
+                <div class="col-md-3">
+                    <select name="miselect" [(ngModel)]="seleccionados" (ngModelChange)="month()">
+                        <option [value]="item['number']" *ngFor="let item of meses">{{item['mes']}}</option>
+                    </select>
+                </div>
+                <!-- <div class="dropdown col-md-4">
+                    <button class="btn btn-primary dropdown-toggle poppinsLight" type="button" data-toggle="dropdown"
+                        *ngIf="meses.length>0">{{meses[0]['mes']}}
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li *ngFor="let mes of meses | slice:1 ; let i=index">
+                            <a (click)="changeMes(i+1)" style="cursor: pointer;">{{mes['mes']}}</a>
+                        </li>
+                    </ul>
+                </div> -->
             </div>
             <div class="container">
                 <div class="row">
@@ -38,7 +53,8 @@
                                         <td>{{factura.metodo}}</td>
                                         <td>{{factura.total | currency : '$': 'symbol':'1.0-0'}}</td>
                                         <td class="d-flex justify-content-around qubitIcons">
-                                            <img (click)="deleteVenta(factura.id)" style="cursor: pointer; margin-top: 2px;"
+                                            <img (click)="deleteVenta(factura.id)"
+                                                style="cursor: pointer; margin-top: 2px;"
                                                 src="../../../assets/images/iconos/delete.svg" height="15px" alt="">
                                             <img (click)="printCopy(factura.id)"
                                                 style="cursor: pointer; margin-top: 2px;"
@@ -57,7 +73,8 @@
                         <button class="btn mt-0 titles" type="submit" (click)="print()">
                             Reporte
                         </button>
-                        <button class="btn mt-0 titles download" (click)="downloadFile()">Descargar <fa-icon [icon]="faDownload">
+                        <button class="btn mt-0 titles download" (click)="downloadFile()">Descargar <fa-icon
+                                [icon]="faDownload">
                             </fa-icon>
                         </button>
                     </div>

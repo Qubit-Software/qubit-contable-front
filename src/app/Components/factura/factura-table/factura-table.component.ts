@@ -33,11 +33,14 @@ export class FacturaTableComponent implements OnInit {
   total = 0;
   gastos: GastosModel[] = new Array();
   headerPos: string = '';
+  meses: Object[] = new Array();
+  seleccionados: any = 0;
 
   constructor(private venta: VentasService, private sucursal: SucursalService, private pos: PosService, private helpers: HelperFunctionsService,
     private inventarioService: InventarioService, private gastosServices: GastosService) {
   }
   ngOnInit(): void {
+    this.llenaMeses();
     this.currentDate.setHours(0, 0, 0, 0)
     if (this.sucursal.empresa == null) {
       this.sucursal.getSucursalInfo().subscribe(res => {
@@ -49,6 +52,10 @@ export class FacturaTableComponent implements OnInit {
       this.getGastos();
     }
     this.getHeaders();
+  }
+  llenaMeses() {
+    this.meses = [{ 'mes': 'Enero', 'number': 0 }, { 'mes': 'Febrero', 'number': 1 }, { 'mes': 'Marzo', 'number': 2 }, { 'mes': 'Abril', 'number': 3 }, { 'mes': 'Mayo', 'number': 4 }, { 'mes': 'Junio', 'number': 5 },
+    { 'mes': 'Julio', 'number': 6 }, { 'mes': 'Agosto', 'number': 7 }, { 'mes': 'Septiembre', 'number': 8 }, { 'mes': 'Octubre', 'number': 9 }, { 'mes': 'Noviembre', 'number': 10 }, { 'mes': 'Diciembre', 'number': 11 }]
   }
   getHeaders() {
     if (this.helpers.validateIdEmpresa()) {
@@ -152,8 +159,10 @@ export class FacturaTableComponent implements OnInit {
     } else {
       gasto = null;
     }
-    if (gasto.length == 0) {
-      gasto = null;
+    if (gasto != null) {
+      if (gasto.length == 0) {
+        gasto = null;
+      }
     }
     this.pos.posReport(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion,
       this.sucursal.sucursal.ciudad, this.period, fecha, this.helpers.formatter.format(this.efectivo),
@@ -215,7 +224,7 @@ export class FacturaTableComponent implements OnInit {
     var mes = new Date();
     mes.setHours(0, 0, 0, 0)
     mes.setMonth(mes.getMonth() - 1);
-    let items = this.allFacturas.filter(item => item.fecha >= mes);
+    let items = this.allFacturas.filter(item => item.fecha.getMonth() == this.seleccionados);
     this.facturas = items;
     this.facturas.forEach(fatura => {
       if (fatura.metodo == "Efectivo") {
@@ -231,6 +240,9 @@ export class FacturaTableComponent implements OnInit {
       this.total = this.total + (+fatura.total)
     });
 
+  }
+  changeMes(i: number) {
+    [this.meses[0], this.meses[i]] = [this.meses[i], this.meses[0]];
   }
   deleteVenta(id) {
     Swal.fire({
