@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  client:
+    container_name: clientservice
+    restart: always
+    build: .
+    ports: 
+        - "3001:3001"
+    depends_on:
+          - mysqldb
+    stdin_open: true
+    tty: true
+    volumes: 
+      - .:/usr/src/app
