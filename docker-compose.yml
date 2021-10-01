@@ -1,15 +1,35 @@
 version: "3"
 
 services:
-  client:
-    container_name: clientservice
-    restart: always
+  front: 
     build: .
-    ports: 
-        - "3001:3001"
+    ports:
+      - "4200:4200"
+
+  express: #name of the second service
+    build: ../Back-end .
     depends_on:
-          - mysqldb
-    stdin_open: true
-    tty: true
-    volumes: 
-      - .:/usr/src/app
+      - postgres
+    ports:
+      - "3000:3000" #specify ports forewarding
+  postgres:
+    image: postgres:11.2-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5050:80"
+volumes:
+  database-data:
+    

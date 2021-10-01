@@ -474,44 +474,44 @@ export class FacturaProductoComponent implements OnInit {
       let iva = this.getNumber(this.iva);
       let descuento = this.getNumber(this.descuento);
       let recibe = this.getNumber(this.recibeInput);
-      this.pos.posVenta(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion, this.sucursal.sucursal.ciudad,
-        factura, fecha, products, this.helpers.formatter.format(this.subtotal), this.helpers.formatter.format(iva), this.helpers.formatter.format(descuento), this.helpers.formatter.format(this.total),
-        this.helpers.formatter.format(recibe), this.helpers.formatter.format(this.cambioCalcule), factura, this.consumidor.nombre).subscribe(res => {
-          this.ventas.createVenta(this.sucursal.empresa.id, this.total, this.iva, fecha1, this.seleccionado, this.comentario, this.sucursal.sucursal.id,
-            this.consumidor.id, productArray).subscribe(res => {
-              let tempOrder = JSON.parse(JSON.stringify(this.productsCompra));
-              this.order.UpdateConsumidor(new ConsumidorModel());
-              this.productsCompra = new Array();
-              this.newitemCompra();
-              this.order.chargeItemsInventario(new Array())
-              this.recibeInput = '';
-              this.cambioCalcule = 0;
-              this.descuento = 0;
-              this.comentario = '';
-              this.calculaValores();
-              Swal.close();
-              Swal.fire('Ticket impreso',
-                'El ticket se ha dispensado con exito',
-                'success');
-              this.lessInventory(tempOrder);
-            }, (err) => {
-              Swal.close();
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Vuelve a intentarlo'
-              });
-              console.log(err);
-            });
+      // this.pos.posVenta(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion, this.sucursal.sucursal.ciudad,
+      // factura, fecha, products, this.helpers.formatter.format(this.subtotal), this.helpers.formatter.format(iva), this.helpers.formatter.format(descuento), this.helpers.formatter.format(this.total),
+      // this.helpers.formatter.format(recibe), this.helpers.formatter.format(this.cambioCalcule), factura, this.consumidor.nombre).subscribe(res => {
+      this.ventas.createVenta(this.sucursal.empresa.id, this.total, this.iva, fecha1, this.seleccionado, this.comentario, this.sucursal.sucursal.id,
+        this.consumidor.id, productArray).subscribe(res => {
+          let tempOrder = JSON.parse(JSON.stringify(this.productsCompra));
+          this.order.UpdateConsumidor(new ConsumidorModel());
+          this.productsCompra = new Array();
+          this.newitemCompra();
+          this.order.chargeItemsInventario(new Array())
+          this.recibeInput = '';
+          this.cambioCalcule = 0;
+          this.descuento = 0;
+          this.comentario = '';
+          this.calculaValores();
+          Swal.close();
+          Swal.fire('Ticket impreso',
+            'El ticket se ha dispensado con exito',
+            'success');
+          this.lessInventory(tempOrder);
         }, (err) => {
           Swal.close();
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'No se encuentra la impresora conectada'
+            text: 'Vuelve a intentarlo'
           });
           console.log(err);
         });
+      // }, (err) => {
+      //   Swal.close();
+      //   Swal.fire({
+      //     icon: 'error',
+      //     title: 'Error',
+      //     text: 'No se encuentra la impresora conectada'
+      //   });
+      //   console.log(err);
+      // });
     })
   }
   payApartado() {
@@ -556,44 +556,44 @@ export class FacturaProductoComponent implements OnInit {
     let recibe = this.getNumber(this.recibeInput);
     let abono = this.getNumber(this.abono);
     let saldo = this.getNumber(this.saldo)
-    this.pos.posSaldo(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion, this.sucursal.sucursal.ciudad,
-      this.typeFacturacion, fecha, products, this.helpers.formatter.format(0), this.helpers.formatter.format(iva), this.helpers.formatter.format(descuento), this.helpers.formatter.format(this.total),
-      this.helpers.formatter.format(abono), this.helpers.formatter.format(saldo), this.helpers.formatter.format(recibe), this.helpers.formatter.format(this.cambioCalcule), this.consumidor.nombre).subscribe(res => {
-        this.saldos.createSaldoApartado(this.sucursal.empresa.id, this.typeFacturacion, this.total, this.saldo, false, fecha1, this.comentario, this.sucursal.sucursal.id,
-          this.consumidor.id, abono, this.seleccionado, productArray).subscribe(res => {
-            let tempOrder = JSON.parse(JSON.stringify(this.productsCompra));
-            this.order.UpdateConsumidor(new ConsumidorModel());
-            this.productsCompra = new Array();
-            this.newitemCompra();
-            this.order.chargeItemsInventario(new Array())
-            this.recibeInput = '';
-            this.cambioCalcule = 0;
-            this.descuento = 0;
-            this.comentario = '';
-            this.calculaValores();
-            Swal.close();
-            Swal.fire('Ticket impreso',
-              'El ticket se ha dispensado con exito',
-              'success');
-            this.lessInventory(tempOrder);
-          }, (err) => {
-            Swal.close();
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Vuelve a intentarlo'
-            });
-            console.log(err);
-          });
+    // this.pos.posSaldo(this.sucursal.empresa.nit, this.sucursal.empresa.telefono, this.sucursal.sucursal.direccion, this.sucursal.sucursal.ciudad,
+    // this.typeFacturacion, fecha, products, this.helpers.formatter.format(0), this.helpers.formatter.format(iva), this.helpers.formatter.format(descuento), this.helpers.formatter.format(this.total),
+    // this.helpers.formatter.format(abono), this.helpers.formatter.format(saldo), this.helpers.formatter.format(recibe), this.helpers.formatter.format(this.cambioCalcule), this.consumidor.nombre).subscribe(res => {
+    this.saldos.createSaldoApartado(this.sucursal.empresa.id, this.typeFacturacion, this.total, this.saldo, false, fecha1, this.comentario, this.sucursal.sucursal.id,
+      this.consumidor.id, abono, this.seleccionado, productArray).subscribe(res => {
+        let tempOrder = JSON.parse(JSON.stringify(this.productsCompra));
+        this.order.UpdateConsumidor(new ConsumidorModel());
+        this.productsCompra = new Array();
+        this.newitemCompra();
+        this.order.chargeItemsInventario(new Array())
+        this.recibeInput = '';
+        this.cambioCalcule = 0;
+        this.descuento = 0;
+        this.comentario = '';
+        this.calculaValores();
+        Swal.close();
+        Swal.fire('Ticket impreso',
+          'El ticket se ha dispensado con exito',
+          'success');
+        this.lessInventory(tempOrder);
       }, (err) => {
         Swal.close();
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'No se encuentra la impresora conectada'
+          text: 'Vuelve a intentarlo'
         });
         console.log(err);
       });
+    // }, (err) => {
+    //   Swal.close();
+    //   Swal.fire({
+    //     icon: 'error',
+    //     title: 'Error',
+    //     text: 'No se encuentra la impresora conectada'
+    //   });
+    //   console.log(err);
+    // });
   }
   lessInventory(order) {
     let data = new Array()

@@ -1,28 +1,23 @@
-# Stage 1: Compile and Build angular codebase
+# Create image based on the official Node 6 image from dockerhub
+FROM node:10
 
-# Use official node image as the base image
-FROM node:latest as build
+# Create a directory where our app will be placed
+RUN mkdir -p /usr/src/app
 
-# Set the working directory
-WORKDIR /usr/local/app
+# Change directory so that our commands run inside this new directory
+WORKDIR /usr/src/app
 
-# Add the source code to app
-COPY ./ /usr/local/app/
+# Copy dependency definitions
+COPY package.json /usr/src/app
 
-# Install all the dependencies
+# Install dependecies
 RUN npm install
 
-# Generate the build of the application
-RUN npm run build
+# Get all the code needed to run the app
+COPY . /usr/src/app
 
+# Expose the port the app runs in
+EXPOSE 4200
 
-# Stage 2: Serve app with nginx server
-
-# Use official nginx image as the base image
-FROM nginx:latest
-
-# Copy the build output to replace the default nginx contents.
-COPY --from=build /usr/local/app/dist/Front-end /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
+# Serve the app
+CMD ["npm", "start"]
