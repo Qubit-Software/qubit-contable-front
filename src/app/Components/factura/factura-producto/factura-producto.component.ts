@@ -471,6 +471,7 @@ export class FacturaProductoComponent implements OnInit {
           products.push(prod);
         }
       });
+      this.iva = 0;
       let iva = this.getNumber(this.iva);
       let descuento = this.getNumber(this.descuento);
       let recibe = this.getNumber(this.recibeInput);
