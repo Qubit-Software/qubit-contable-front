@@ -254,9 +254,9 @@ export class FacturaProductoComponent implements OnInit {
   calculaVal(index) {
     let cantidad = this.productsCompra[index]['cantidad'];
     let precio = cantidad * this.getNumber(this.productsCompra[index]['precio']);
-    // let iva = (precio / this.ivaPercent1) * this.ivaPercent;
-    let iva = 0;
-    this.productsCompra[index]['iva'] = this.transformNumber(Math.round(iva));
+    let iva = (precio / this.ivaPercent1) * this.ivaPercent;
+    // this.productsCompra[index]['iva'] = this.transformNumber(Math.round(iva));
+    this.productsCompra[index]['iva'] = this.transformNumber(Math.round(0));
     this.productsCompra[index]['pbase'] = this.transformNumber(Math.round(precio - iva));
   }
   calculaCambio() {
@@ -279,14 +279,16 @@ export class FacturaProductoComponent implements OnInit {
         if (validate) {
           this.iva = this.iva + (this.getNumber(element['iva']) * element['cantidad'])
           this.subtotal = this.subtotal + (this.getNumber(element['pbase']) * element['cantidad']);
-          this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
+          // this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
+          this.total = this.total + (this.getNumber(element['pbase']) * element['cantidad']);
           this.saldo = this.saldo + (this.getNumber(element['precio']) * element['cantidad']);
         }
         else {
           element['cantidad'] = 1;
           this.iva = this.iva + (this.getNumber(element['iva']) * element['cantidad'])
           this.subtotal = this.subtotal + (this.getNumber(element['pbase']) * element['cantidad']);
-          this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
+          // this.total = this.total + (this.getNumber(element['precio']) * element['cantidad']);
+          this.total = this.total + (this.getNumber(element['pbase']) * element['cantidad']);
           this.saldo = this.saldo + (this.getNumber(element['precio']) * element['cantidad']);
         }
       });
