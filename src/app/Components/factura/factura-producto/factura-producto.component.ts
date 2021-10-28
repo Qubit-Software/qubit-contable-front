@@ -254,7 +254,8 @@ export class FacturaProductoComponent implements OnInit {
   calculaVal(index) {
     let cantidad = this.productsCompra[index]['cantidad'];
     let precio = cantidad * this.getNumber(this.productsCompra[index]['precio']);
-    let iva = (precio / this.ivaPercent1) * this.ivaPercent;
+    // let iva = (precio / this.ivaPercent1) * this.ivaPercent;
+    let iva = 0;
     this.productsCompra[index]['iva'] = this.transformNumber(Math.round(iva));
     this.productsCompra[index]['pbase'] = this.transformNumber(Math.round(precio - iva));
   }
