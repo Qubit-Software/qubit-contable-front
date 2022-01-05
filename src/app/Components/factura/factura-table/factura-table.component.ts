@@ -198,7 +198,9 @@ export class FacturaTableComponent implements OnInit {
     this.efectivo = 0;
     this.otro = 0;
     this.tarjeta = 0;
-    let items = this.allFacturas.filter(item => item.fecha.getTime() === this.currentDate.getTime());
+    let yesterday=this.currentDate;
+    yesterday.setDate(yesterday.getDate() - 1)
+    let items = this.allFacturas.filter(item => item.fecha.getTime() > yesterday.getTime());
     this.facturas = items;
     this.facturas.forEach(fatura => {
       if (fatura.metodo == "Efectivo") {
