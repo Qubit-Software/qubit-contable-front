@@ -200,7 +200,7 @@ export class FacturaTableComponent implements OnInit {
     this.tarjeta = 0;
     let yesterday=this.currentDate;
     yesterday.setDate(yesterday.getDate() - 1)
-    let items = this.allFacturas.filter(item => item.fecha.getTime() > yesterday.getTime());
+    let items = this.allFacturas.filter(item => item.fecha.getTime() >= yesterday.getTime());
     this.facturas = items;
     this.facturas.forEach(fatura => {
       if (fatura.metodo == "Efectivo") {
