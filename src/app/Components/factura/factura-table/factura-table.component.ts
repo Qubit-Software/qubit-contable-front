@@ -226,7 +226,8 @@ export class FacturaTableComponent implements OnInit {
     var mes = new Date();
     mes.setHours(0, 0, 0, 0)
     mes.setMonth(mes.getMonth() - 1);
-    let items = this.allFacturas.filter(item => item.fecha.getMonth() == this.seleccionados);
+    let items = this.allFacturas.filter(item => item.fecha.getMonth() == this.seleccionados 
+        && item.fecha.getFullYear() == mes.getFullYear());
     this.facturas = items;
     this.facturas.forEach(fatura => {
       if (fatura.metodo == "Efectivo") {
