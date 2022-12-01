@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   // apiUrl: 'http://127.0.0.1:3000/api',
-  apiUrl: 'https://qubit-contable-back.herokuapp.com/api',
+  apiUrl: 'https://qubit-contable-backend.onrender.com/api',
   apiPos: 'http://127.0.0.1:3001/api',
   
   firebaseConfig: {
